@@ -78,7 +78,76 @@ module.exports.menus = (page, callback) => {
     
     dates.forEach((date, day) => {
         date.forEach(cafeteria => {
-            if (callback) callback(cafeteria, day);
+            callback(day, cafeteria);
         });
+    });
+};
+
+module.exports.cafeterias = (page, callback) => {
+    var $ = cheerio.load(page);
+    var tables = $('.basic_tbl').filter(i => i < 2);
+    
+    var onBreakPattern = /\(방학중 ([0-9]{2}:[0-9]{2})\)/;
+    
+    tables.each((i, table) => {
+        var result = {
+            cafeteria: i === 0 ? '919동' : '아워홈',
+            hours: []
+        };
+        
+        $(table).find('tr').each((i, tr) => {
+            var tds = $(tr).find('td');
+            if (i > 3) {
+                result.location = tds.first().text().trim();
+            } else {
+                var search = function(days) {
+                    for (var i = 0; i < result.hours.length; i++) {
+                        var target = result.hours[i];
+                        if (target.conditions.day.every(x => days.indexOf(x) != -1) &&
+                            days.every(x => target.conditions.day.indexOf(x) != -1)) {
+                            return target;
+                        }
+                    }
+                    return null;
+                };
+                
+                var update = function(days, hours) {
+                    var found = search(days);
+                    if (!found) {
+                        found = {
+                            conditions: {day: days},
+                            opens_at: [],
+                            closes_at: []
+                        };
+                        result.hours.push(found);
+                    }
+                    found.opens_at.push(hours[0].trim());
+                    found.closes_at.push(hours[1].trim());
+                };
+                
+                tds.each((i, td) => {
+                    var text = $(td).text().trim();
+                    var tokens = () => text.split('~');
+                    var days = [i === 0 ? 'weekdays' : 'weekends'];
+                    
+                    if ($(td).attr('colspan') == 2) {
+                        days = ['weekdays', 'weekends'];
+                    }
+                    
+                    if (text.indexOf('방학중') != -1) {
+                        var onBreakTokens = tokens().map(token => {
+                            var match = token.match(onBreakPattern);
+                            return (match && match[1]) || token;
+                        });
+                        
+                        update(days.concat('break'), onBreakTokens);
+                        
+                        text = text.replace(onBreakPattern, '');
+                    }
+                    update(days, tokens());
+                });
+            }
+        });
+        callback(result);
     });
 };

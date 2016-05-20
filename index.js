@@ -1,18 +1,37 @@
 var fs = require('fs');
 var path = require('path');
 
-var strategies = path.join(__dirname, 'strategies');
-var cafeterias = fs.readdirSync(strategies).filter(file => {
-    return fs.statSync(path.join(strategies, file)).isDirectory();
-});
+var defaultStrategies = 'strategies';
 
-cafeterias.forEach((cafeteria) => {
-    var parser = require(`${strategies}/${cafeteria}/parser`);
-    var scraper = require(`${strategies}/${cafeteria}/scraper`);
-    var exported = module.exports[cafeteria] = module.exports[cafeteria] || {};
-    exported.menus = (dates, callback) => {
-        scraper.menus(dates, (responseBody) => {
-            parser.menus(responseBody, callback);
-        });
-    };
-});
+function load(rootDirectory) {
+    rootDirectory = path.join(__dirname, rootDirectory);
+    var data = {};
+    var cafeterias = fs.readdirSync(rootDirectory).filter(file => {
+        return fs.statSync(path.join(rootDirectory, file)).isDirectory();
+    });
+    cafeterias.forEach(cafeteria => {
+        var parser = require(`${rootDirectory}/${cafeteria}/parser`);
+        var scraper = require(`${rootDirectory}/${cafeteria}/scraper`);
+        data[cafeteria] = {
+            menus: (date, callback) => {
+                scraper.menus(date, responseBody => {
+                    parser.menus(responseBody, callback.bind(null, date));
+                });
+            },
+            cafeterias: callback => {
+                scraper.cafeterias(responseBody => {
+                    parser.cafeterias(responseBody, callback);
+                });
+            }
+        };
+    });
+    return data;
+}
+
+module.exports = function() {
+    var data = load(defaultStrategies);
+    Array.prototype.forEach.call(arguments, directory => {
+        Object.assign(data, load(directory));
+    });
+    return data;
+};
