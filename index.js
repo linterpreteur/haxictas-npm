@@ -14,8 +14,11 @@ function load(rootDirectory) {
         var scraper = require(`${rootDirectory}/${cafeteria}/scraper`);
         data[cafeteria] = {
             menus: (date, callback) => {
-                scraper.menus(date, responseBody => {
-                    parser.menus(responseBody, callback.bind(null, date));
+                scraper.menus(date, function (responseBody) {
+                    var args = [undefined, date];
+                    args = args.concat(Array.prototype.slice.call(arguments, 1));
+                    var _callback = Function.prototype.bind.apply(callback, args);
+                    parser.menus(responseBody, _callback);
                 });
             },
             cafeterias: callback => {

@@ -65,7 +65,7 @@ module.exports.menus = (page, callback) => {
         
         if (!result.cafeteria) return;
         
-        callback(0, result);
+        callback(result);
     });
 };
 

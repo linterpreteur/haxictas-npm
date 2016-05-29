@@ -1,7 +1,5 @@
 module.exports = {
     menus: (page, callback) => {
-        // For the first argument (offset),
-        // Please refer to ourhome/parser.
         callback(0, {
             cafteria: '새로운 식당',
             /*

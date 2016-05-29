@@ -12,7 +12,8 @@ module.exports.menus = (date, callback) => {
         dd = dd[1] ? dd : '0' + dd;
         var _date = `${yyyy}-${mm}-${dd}`;
         
-        httpHandler.get(url, {userAgent: userAgent, params: {date: _date}}, {end: callback});
+        var _callback = responseBody => callback(responseBody, date.getDay());
+        httpHandler.get(url, {userAgent: userAgent, params: {date: _date}}, {end: _callback});
     }
 };
 
