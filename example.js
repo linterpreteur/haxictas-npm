@@ -15,7 +15,6 @@ haxictas.snuco.cafeterias(cafeteriasCallback);
 haxictas.ourhome.cafeterias(cafeteriasCallback);
 
 var date = new Date();
-date.setDate(date.getDate() - 1);
 haxictas.snuco.menus(date, menusCallback);
 haxictas.ourhome.menus(date, menusCallback);
 

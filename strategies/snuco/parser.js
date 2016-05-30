@@ -33,7 +33,7 @@ module.exports.menus = (page, callback) => {
             meals: []
         };
         
-        var separators = /[/\n,]/;
+        var separators = /[/\n]/;
         
         tds.filter(i => i % 2 === 0).each((i, td) => {
             td = $(td);
