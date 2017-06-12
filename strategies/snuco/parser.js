@@ -33,7 +33,8 @@ module.exports.menus = (page, callback) => {
             meals: []
         };
         
-        var separators = /[/\n]/;
+        var priceSymbols = /[\u24D0-\u24E9]/g;
+        var separators = /[/\n]+(?=^|[\u24D0-\u24E9])/;
         
         tds.filter(i => i % 2 === 0).each((i, td) => {
             td = $(td);
@@ -45,17 +46,17 @@ module.exports.menus = (page, callback) => {
                 result.cafeteria = td.text();
             } else {
                 var items = {};
-                var priceSymbols = /[\u24D0-\u24E9]/g;
                 var matches = text.match(priceSymbols);
                 
                 if (matches) {
-                    text.split(separators).forEach(text => {
-                        var match = text.match(priceSymbols);
-                        var symbol = match && match[0];
-                        var item = text.replace(symbol, '').trim();
-                        var price = cached.price[symbol] || prices.none;
-                        items[item] = price;
-                    });
+                    text.replace(/\[.+?\]|\(.+?\)/, '')
+                        .split(separators).forEach(text => {
+                            var match = text.match(priceSymbols);
+                            var symbol = match && match[0];
+                            var item = text.replace(symbol, '').trim();
+                            var price = cached.price[symbol] || prices.none;
+                            items[item] = price;
+                        });
                 } else if (text.trim()) {
                     items[text.trim()] = prices.none;
                 }
