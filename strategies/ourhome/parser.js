@@ -1,17 +1,17 @@
-var cheerio = require('cheerio');
-var prices = require('./prices');
+const cheerio = require('cheerio');
+const prices = require('./prices');
 
 module.exports.menus = (page, callback) => {
-    var cached = this.cached = this.cached || {};
-    var $ = cheerio.load(page);
+    const cached = this.cached = this.cached || {};
+    const $ = cheerio.load(page);
 
-    var parsePrice = (board) => {
-        var price = {};
-        var lis = board.find('li');
+    const parsePrice = (board) => {
+        const price = {};
+        const lis = board.find('li');
         if (lis.contents().length) return false;
         lis.each(li => {
-            var tag = $(li).attr('class');
-            var value = $(li).text();
+            const tag = $(li).attr('class');
+            const value = $(li).text();
             if (value.match(/[0-9]원/)) {
                 value = parseInt(value.replace(/[^0-9]/, ''), 10);
             }
@@ -22,52 +22,52 @@ module.exports.menus = (page, callback) => {
     
     cached.price = parsePrice($('.board')) || cached.price || prices;
     
-    var cafeterias = {};
+    const cafeterias = {};
     $('td[scope=rowgroup]').each((i, td) => {
         cafeterias[$(td).text().trim()] = i;
     });
     
-    var dates = [];
-    for (var i = 0; i < 7; i++) {
-        var date = [];
-        for (var j = 0; j < Object.keys(cafeterias).length; j++) {
+    const dates = [];
+    for (let i = 0; i < 7; i++) {
+        const date = [];
+        for (const j = 0; j < Object.keys(cafeterias).length; j++) {
             date.push({});
         }
         dates.push(date);
     }
     
-    var day = 0; // 0 = SUN, 1 = MON, ..., 6 = SAT
-    var meal = 0; // 0 = BFST, 1 = LNCH, 2 = DNNR
-    var cafeteria = null;
+    const day = 0; // 0 = SUN, 1 = MON, ..., 6 = SAT
+    const meal = 0; // 0 = BFST, 1 = LNCH, 2 = DNNR
+    const cafeteria = null;
     
-    var meals = ['아침', '점심', '저녁'];
-    var onRemarksCell;
+    const meals = ['아침', '점심', '저녁'];
+    let onRemarksCell;
             
-    var isCafeteriaNameCell = (td) => $(td).attr('scope') === 'rowgroup';
+    const isCafeteriaNameCell = (td) => $(td).attr('scope') === 'rowgroup';
     
     $('.t_col td').each((_, td) => {
-        var lis = $(td).find('li');
-        var cellText = $(td).text().trim();
+        const lis = $(td).find('li');
+        const cellText = $(td).text().trim();
         
-        var cellEmpty = !cellText;
-        var cellHasItems = !!lis.contents().length;
-        var onTagCell = !cellEmpty && !cellHasItems;
-        var onMenuItemCell = cellHasItems || (!onRemarksCell && cellEmpty);
+        const cellEmpty = !cellText;
+        const cellHasItems = !!lis.contents().length;
+        const onTagCell = !cellEmpty && !cellHasItems;
+        const onMenuItemCell = cellHasItems || (!onRemarksCell && cellEmpty);
         
         if (onTagCell) {
             onRemarksCell = (cellText === '비고');
             if (isCafeteriaNameCell(td)) cafeteria = cellText.trim();
             if (meals.indexOf(cellText) > -1) meal = meals.indexOf(cellText);
         } else if (onMenuItemCell) {
-            var result = dates[day][cafeterias[cafeteria]];
+            const result = dates[day][cafeterias[cafeteria]];
             
             result['cafeteria'] = result['cafeteria'] || cafeteria;
             result['meals'] = result['meals'] || [{}, {}, {}];
             
             lis.each((_, li) => {
-                var item = $(li).text().trim();
-                var symbol = $(li).attr('class');
-                var price = cached.price[symbol] || prices.none;
+                const item = $(li).text().trim();
+                const symbol = $(li).attr('class');
+                const price = cached.price[symbol] || prices.none;
                 
                 result['meals'][meal][item] = price;
             });
@@ -84,25 +84,25 @@ module.exports.menus = (page, callback) => {
 };
 
 module.exports.cafeterias = (page, callback) => {
-    var $ = cheerio.load(page);
-    var tables = $('.basic_tbl').filter(i => i < 2);
+    const $ = cheerio.load(page);
+    const tables = $('.basic_tbl').filter(i => i < 2);
     
-    var onBreakPattern = /\(방학중 ([0-9]{2}:[0-9]{2})\)/;
+    const onBreakPattern = /\(방학중 ([0-9]{2}:[0-9]{2})\)/;
     
     tables.each((i, table) => {
-        var result = {
+        const result = {
             cafeteria: i === 0 ? '919동' : '아워홈',
             hours: []
         };
         
         $(table).find('tr').each((i, tr) => {
-            var tds = $(tr).find('td');
+            const tds = $(tr).find('td');
             if (i > 3) {
                 result.location = tds.first().text().trim();
             } else {
-                var search = function(days) {
-                    for (var i = 0; i < result.hours.length; i++) {
-                        var target = result.hours[i];
+                const search = function(days) {
+                    for (const i = 0; i < result.hours.length; i++) {
+                        const target = result.hours[i];
                         if (target.conditions.day.every(x => days.indexOf(x) != -1) &&
                             days.every(x => target.conditions.day.indexOf(x) != -1)) {
                             return target;
@@ -111,8 +111,8 @@ module.exports.cafeterias = (page, callback) => {
                     return null;
                 };
                 
-                var update = function(days, hours) {
-                    var found = search(days);
+                const update = function(days, hours) {
+                    const found = search(days);
                     if (!found) {
                         found = {
                             conditions: {day: days},
@@ -126,17 +126,17 @@ module.exports.cafeterias = (page, callback) => {
                 };
                 
                 tds.each((i, td) => {
-                    var text = $(td).text().trim();
-                    var tokens = () => text.split('~');
-                    var days = [i === 0 ? 'weekdays' : 'weekends'];
+                    const text = $(td).text().trim();
+                    const tokens = () => text.split('~');
+                    const days = [i === 0 ? 'weekdays' : 'weekends'];
                     
                     if ($(td).attr('colspan') == 2) {
                         days = ['weekdays', 'weekends'];
                     }
                     
                     if (text.indexOf('방학중') != -1) {
-                        var onBreakTokens = tokens().map(token => {
-                            var match = token.match(onBreakPattern);
+                        const onBreakTokens = tokens().map(token => {
+                            const match = token.match(onBreakPattern);
                             return (match && match[1]) || token;
                         });
                         

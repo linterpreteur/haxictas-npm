@@ -1,18 +1,18 @@
-var cheerio = require('cheerio');
-var prices = require('./prices');
+const cheerio = require('cheerio');
+const prices = require('./prices');
 
 module.exports.menus = (page, callback) => {
-    var cached = this.cached = this.cached || {};
-    var $ = cheerio.load(page);
+    const cached = this.cached = this.cached || {};
+    const $ = cheerio.load(page);
     
-    var pricePattern = /[\u24D0-\u24E9] [^ ]+/g;
-    var parsePrice = (text) => {
-        var price = {};
-        var matches = text.match(pricePattern);
+    const pricePattern = /[\u24D0-\u24E9] [^ ]+/g;
+    const parsePrice = (text) => {
+        const price = {};
+        const matches = text.match(pricePattern);
         if (!matches) return false;
         matches.forEach((m) => {
-            var symbol = m.substring(0, m.indexOf(' '));
-            var value = m.substring(m.indexOf(' ') + 1);
+            const symbol = m.substring(0, m.indexOf(' '));
+            const value = m.substring(m.indexOf(' ') + 1);
             if (value.match(/[0-9]원/)) {
                 value = parseInt(value.replace(/[^0-9]/, ''), 10);
             }
@@ -21,40 +21,40 @@ module.exports.menus = (page, callback) => {
         return price;
     };
     
-    var trs = $('#Content tr');
+    const trs = $('#Content tr');
     
     cached.price = parsePrice(trs.last().find('td').text()) || cached.price || prices;
     
     trs.filter((_, v) => $(v).text().trim()).each((i, tr) => {
-        var tds = $(tr).find('td');
+        const tds = $(tr).find('td');
         
-        var result = {
+        const result = {
             cafeteria: null,
             meals: []
         };
         
-        var priceSymbols = /[\u24D0-\u24E9]/g;
-        var separators = /[/\n]+(?=^|[\u24D0-\u24E9])/;
+        const priceSymbols = /[\u24D0-\u24E9]/g;
+        const separators = /[/\n]+(?=^|[\u24D0-\u24E9])/;
         
         tds.filter(i => i % 2 === 0).each((i, td) => {
             td = $(td);
-            var text = td.text();
+            const text = td.text();
             
             if (i === 0) {
                 if (!text || text.match(pricePattern)) return false;
                 td.html(td.html().replace(/(<.+?>.*)<br>.*(<.+?>)/, '$1$2'));
                 result.cafeteria = td.text();
             } else {
-                var items = {};
-                var matches = text.match(priceSymbols);
+                const items = {};
+                const matches = text.match(priceSymbols);
                 
                 if (matches) {
                     text.replace(/\[.+?\]|\(.+?\)/, '')
                         .split(separators).forEach(text => {
-                            var match = text.match(priceSymbols);
-                            var symbol = match && match[0];
-                            var item = text.replace(symbol, '').trim();
-                            var price = cached.price[symbol] || prices.none;
+                            const match = text.match(priceSymbols);
+                            const symbol = match && match[0];
+                            const item = text.replace(symbol, '').trim();
+                            const price = cached.price[symbol] || prices.none;
                             items[item] = price;
                         });
                 } else if (text.trim()) {
@@ -71,14 +71,14 @@ module.exports.menus = (page, callback) => {
 };
 
 module.exports.cafeterias = (page, callback) => {
-    var $ = cheerio.load(page);
+    const $ = cheerio.load(page);
     
     // hard coding hell yeah!
     // have no idea whats going on
-    var cafeteria = 'cafeteria';
-    var floor = 'floor';
-    var days = ['weekdays', 'saturday', 'holidays'];
-    var categories = [
+    const cafeteria = 'cafeteria';
+    const floor = 'floor';
+    const days = ['weekdays', 'saturday', 'holidays'];
+    const categories = [
         cafeteria,
         'location',
         floor,
@@ -88,27 +88,27 @@ module.exports.cafeterias = (page, callback) => {
         days[1],
         days[2]
     ];
-    var secondLineColumnOffset = 2;
+    const secondLineColumnOffset = 2;
     
-    var trs = $('#Content tr');
+    const trs = $('#Content tr');
     
     trs.filter((_, v) => $(v).text().trim()).each((i, tr) => {
-        var tds = $(tr).find('td');
-        var mod = tds.first().text().trim() ? 0 : 1;
-        var result = {
+        const tds = $(tr).find('td');
+        const mod = tds.first().text().trim() ? 0 : 1;
+        const result = {
             hours: []
         };
         
-        var _floor = floor;
-        var inserted = {};
+        const _floor = floor;
+        const inserted = {};
         tds.filter(i => i % 2 === mod).each((i, td) => {
-            var category = categories[i + (mod === 0 ? 0 : secondLineColumnOffset)];
+            const category = categories[i + (mod === 0 ? 0 : secondLineColumnOffset)];
             td = $(td);
             if (category === cafeteria) {
                 td.html(td.html().replace(/(\s+|\n)/g, ' '));
                 td.html(td.html().replace(/(<.+?>.*)<br>.*(<.+?>)/, '$1$2'));
             }
-            var text = td.text().trim();
+            const text = td.text().trim();
             
             if (categories.indexOf(category) < secondLineColumnOffset) {
                 result[category] = text;
@@ -118,16 +118,16 @@ module.exports.cafeterias = (page, callback) => {
                 } if (days.indexOf(category) != -1) {
                     text = text.replace(/ ?[-~] ?/g, '-');
                     
-                    var hour = function(regex) {
-                        var matches = text.match(regex);
+                    const hour = function(regex) {
+                        const matches = text.match(regex);
                         if (!matches) return null;
                         return matches.map(x => x.match(/[0-9:]+/)[0]);
                     };
                     
-                    var opens_at = hour(/[0-9]{2}:[0-9]{2}\-/g);
-                    var closes_at = hour(/\-[0-9]{2}:[0-9]{2}/g);
+                    const opens_at = hour(/[0-9]{2}:[0-9]{2}\-/g);
+                    const closes_at = hour(/\-[0-9]{2}:[0-9]{2}/g);
                     
-                    var dupe = inserted[_floor + text];
+                    const dupe = inserted[_floor + text];
                     if (isFinite(dupe)) {
                         result.hours[dupe].conditions.day.push(category);
                     } else if (opens_at || closes_at) {
