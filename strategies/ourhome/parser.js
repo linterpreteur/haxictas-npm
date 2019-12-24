@@ -30,15 +30,15 @@ module.exports.menus = (page, callback) => {
     const dates = [];
     for (let i = 0; i < 7; i++) {
         const date = [];
-        for (const j = 0; j < Object.keys(cafeterias).length; j++) {
+        for (let j = 0; j < Object.keys(cafeterias).length; j++) {
             date.push({});
         }
         dates.push(date);
     }
     
-    const day = 0; // 0 = SUN, 1 = MON, ..., 6 = SAT
-    const meal = 0; // 0 = BFST, 1 = LNCH, 2 = DNNR
-    const cafeteria = null;
+    let day = 0; // 0 = SUN, 1 = MON, ..., 6 = SAT
+    let meal = 0; // 0 = BFST, 1 = LNCH, 2 = DNNR
+    let cafeteria = null;
     
     const meals = ['아침', '점심', '저녁'];
     let onRemarksCell;
@@ -101,7 +101,7 @@ module.exports.cafeterias = (page, callback) => {
                 result.location = tds.first().text().trim();
             } else {
                 const search = function(days) {
-                    for (const i = 0; i < result.hours.length; i++) {
+                    for (let i = 0; i < result.hours.length; i++) {
                         const target = result.hours[i];
                         if (target.conditions.day.every(x => days.indexOf(x) != -1) &&
                             days.every(x => target.conditions.day.indexOf(x) != -1)) {
@@ -112,7 +112,7 @@ module.exports.cafeterias = (page, callback) => {
                 };
                 
                 const update = function(days, hours) {
-                    const found = search(days);
+                    let found = search(days);
                     if (!found) {
                         found = {
                             conditions: {day: days},
@@ -126,9 +126,9 @@ module.exports.cafeterias = (page, callback) => {
                 };
                 
                 tds.each((i, td) => {
-                    const text = $(td).text().trim();
+                    let text = $(td).text().trim();
                     const tokens = () => text.split('~');
-                    const days = [i === 0 ? 'weekdays' : 'weekends'];
+                    let days = [i === 0 ? 'weekdays' : 'weekends'];
                     
                     if ($(td).attr('colspan') == 2) {
                         days = ['weekdays', 'weekends'];
