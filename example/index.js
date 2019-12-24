@@ -1,4 +1,4 @@
-const haxictas = require('./')('third_party');
+const haxictas = require('..')('./example/third_party');
 
 const cafeteriasCallback = (info, err) => {
     if (err) {
