@@ -13,12 +13,12 @@ module.exports.menus = (date, callback) => {
         const _date = `${yyyy}-${mm}-${dd}`;
         
         const _callback = responseBody => callback(responseBody, date.getDay());
-        httpHandler.get(url, {userAgent: userAgent, params: {date: _date}}, {end: _callback});
+        httpHandler.get(url, {userAgent: userAgent, params: {date: _date}}, {end: _callback, error: (e) => { throw e; }});
     }
 };
 
 module.exports.cafeterias = (callback) => {
     const url = 'snuco.com/html/restaurant/restaurant_management.asp';
     const userAgent = 'Haxictas/1.0';
-    httpHandler.get(url, {userAgent: userAgent}, {end: callback});
+    httpHandler.get(url, {userAgent: userAgent}, {end: callback, error: (e) => { throw e; }});
 };
