@@ -3,7 +3,7 @@ const httpHandler = require('../../lib/http-handler');
 module.exports.menus = (date, callback) => {
     const userAgent = 'Haxictas/1.0';
     for (let n = 1; n <= 2; n++) {
-        const url = `snuco.com/html/restaurant/restaurant_menu${n}.asp`;
+        const url = `http://snuco.com/html/restaurant/restaurant_menu${n}.asp`;
         
         const yyyy = date.getFullYear().toString();
         let mm = (date.getMonth() + 1).toString();
@@ -18,7 +18,7 @@ module.exports.menus = (date, callback) => {
 };
 
 module.exports.cafeterias = (callback) => {
-    const url = 'snuco.com/html/restaurant/restaurant_management.asp';
+    const url = 'http://snuco.com/html/restaurant/restaurant_management.asp';
     const userAgent = 'Haxictas/1.0';
     httpHandler.get(url, {userAgent: userAgent}, {end: callback, error: (e) => { throw e; }});
 };
