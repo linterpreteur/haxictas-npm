@@ -1,10 +1,17 @@
 const haxictas = require('./')('third_party');
 
-const cafeteriasCallback = info => {
+const cafeteriasCallback = (info, err) => {
+    if (err) {
+        return console.error(err);
+    }
     console.log(JSON.stringify(info, null, 2));
 };
 
-const menusCallback = (date, day, data) => {
+const menusCallback = (result, err) => {
+    if (err) {
+        return console.error(err);
+    }
+    let {date, day, data} = result;
     date = new Date(date);
     date.setDate(date.getDate() + (day - date.getDay()) % 7);
     data.date = date.valueOf();

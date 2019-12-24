@@ -1,7 +1,7 @@
 const cheerio = require('cheerio');
 const prices = require('./prices');
 
-module.exports.menus = (page, callback) => {
+module.exports.menus = ({data: page}, callback) => {
     const cached = this.cached = this.cached || {};
     const $ = cheerio.load(page);
     
@@ -66,7 +66,7 @@ module.exports.menus = (page, callback) => {
         
         if (!result.cafeteria) return;
         
-        callback(result);
+        callback({data: result});
     });
 };
 

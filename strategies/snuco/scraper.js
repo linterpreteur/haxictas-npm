@@ -12,7 +12,7 @@ module.exports.menus = (date, callback) => {
         dd = dd[1] ? dd : '0' + dd;
         const _date = `${yyyy}-${mm}-${dd}`;
         
-        const _callback = (responseBody, err) => callback(responseBody, date.getDay(), err);
+        const _callback = (responseBody, err) => callback({data: responseBody, day: date.getDay()}, err);
         const query = qs.stringify({date: _date});
         httpHandler.get(
             `${url}?${query}`,

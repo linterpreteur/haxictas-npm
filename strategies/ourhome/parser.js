@@ -1,7 +1,7 @@
 const cheerio = require('cheerio');
 const prices = require('./prices');
 
-module.exports.menus = (page, callback) => {
+module.exports.menus = ({data: page}, callback) => {
     const cached = this.cached = this.cached || {};
     const $ = cheerio.load(page);
 
@@ -78,7 +78,7 @@ module.exports.menus = (page, callback) => {
     
     dates.forEach((date, day) => {
         date.forEach(cafeteria => {
-            callback(day, cafeteria);
+            callback({day: day, data: cafeteria});
         });
     });
 };

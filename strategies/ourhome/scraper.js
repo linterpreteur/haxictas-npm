@@ -5,17 +5,18 @@ const httpHandler = require('../../lib/http-handler');
 module.exports.menus = (date, callback) => {
     const url = 'https://dorm.snu.ac.kr/dk_board/facility/food.php';
     
-    date = parseInt(date.getTime() / 1000, 10);
+    const startDate = parseInt(date.getTime() / 1000, 10);
     
-    const query = qs.stringify({'start_date2': date});
+    const query = qs.stringify({'start_date2': startDate});
     const httpsAgent = new https.Agent({
         rejectUnauthorized: false
     });
     const opts = {httpsAgent: httpsAgent};
+    const _callback = (responseBody, err) => callback({data: responseBody, day: date.getDay()}, err);
     httpHandler.get(
         `${url}?${query}`,
         opts,
-        callback
+        _callback
     );
 };
 
