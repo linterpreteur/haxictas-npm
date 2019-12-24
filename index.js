@@ -19,7 +19,6 @@ function load(rootDirectory) {
                         return callback(null, err);
                     }
                     const _callback = (...args) => {
-                        console.log(args);
                         callback(
                             args[0] && Object.assign({}, args[0], {date: date}),
                             ...args.slice(1)
