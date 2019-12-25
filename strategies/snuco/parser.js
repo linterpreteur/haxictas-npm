@@ -1,74 +1,31 @@
-const cheerio = require('cheerio');
 const {JSDOM} = require('jsdom');
-const prices = require('./prices');
 const {normalize, querySelectorArray} = require('../../lib/utils');
 
-module.exports.menus = ({data: page}, callback) => {
-    const cached = this.cached = this.cached || {};
-    const $ = cheerio.load(page);
-    
-    const pricePattern = /[\u24D0-\u24E9] [^ ]+/g;
-    const parsePrice = (text) => {
-        const price = {};
-        const matches = text.match(pricePattern);
-        if (!matches) return false;
-        matches.forEach((m) => {
-            const symbol = m.substring(0, m.indexOf(' '));
-            const value = m.substring(m.indexOf(' ') + 1);
-            if (value.match(/[0-9]원/)) {
-                value = parseInt(value.replace(/[^0-9]/, ''), 10);
-            }
-            price[symbol] = value;
-        });
-        return price;
-    };
-    
-    const trs = $('#Content tr');
-    
-    cached.price = parsePrice(trs.last().find('td').text()) || cached.price || prices;
-    
-    trs.filter((_, v) => $(v).text().trim()).each((i, tr) => {
-        const tds = $(tr).find('td');
-        
-        const result = {
-            cafeteria: null,
-            meals: []
+module.exports.menus = ({data: page, day}, callback) => {
+    const {document} = (new JSDOM(page)).window;
+
+    function parseMenu(s) {
+        return s.split(/\n+/g)
+            .map(x => x.match(/(.+?)\s*([\d,.]+원)$/) || x)
+            .map(x => (typeof x === 'string') ? [x, '기타'] : [x[1], x[2]])
+            .map(([k, v]) => [normalize(k), normalize(v)])
+            .filter(x => x && x[0])
+            .reduce((acc, [k, v]) => Object.assign({}, acc, {[k]: v}), {});
+    }
+    querySelectorArray(document, 'tbody tr').map(row => {
+        const [cafeteria, breakfast, lunch, dinner] = querySelectorArray(row, 'td');
+        const data = {
+            cafeteria: normalize(cafeteria.textContent),
+            meals: [
+                parseMenu(breakfast.textContent),
+                parseMenu(lunch.textContent),
+                parseMenu(dinner.textContent)
+            ]
         };
-        
-        const priceSymbols = /[\u24D0-\u24E9]/g;
-        const separators = /[/\n]+(?=^|[\u24D0-\u24E9])/;
-        
-        tds.filter(i => i % 2 === 0).each((i, td) => {
-            td = $(td);
-            const text = td.text();
-            
-            if (i === 0) {
-                if (!text || text.match(pricePattern)) return false;
-                td.html(td.html().replace(/(<.+?>.*)<br>.*(<.+?>)/, '$1$2'));
-                result.cafeteria = td.text();
-            } else {
-                const items = {};
-                const matches = text.match(priceSymbols);
-                
-                if (matches) {
-                    text.replace(/\[.+?\]|\(.+?\)/, '')
-                        .split(separators).forEach(text => {
-                            const match = text.match(priceSymbols);
-                            const symbol = match && match[0];
-                            const item = text.replace(symbol, '').trim();
-                            const price = cached.price[symbol] || prices.none;
-                            items[item] = price;
-                        });
-                } else if (text.trim()) {
-                    items[text.trim()] = prices.none;
-                }
-                result.meals.push(items);
-            }
-        });
-        
-        if (!result.cafeteria) return;
-        
-        callback({data: result});
+        callback({
+            data: data,
+            day: day
+        })
     });
 };
 
