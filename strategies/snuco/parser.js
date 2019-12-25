@@ -1,5 +1,7 @@
 const cheerio = require('cheerio');
+const {JSDOM} = require('jsdom');
 const prices = require('./prices');
+const {normalize, querySelectorArray} = require('../../lib/utils');
 
 module.exports.menus = ({data: page}, callback) => {
     const cached = this.cached = this.cached || {};
@@ -71,79 +73,98 @@ module.exports.menus = ({data: page}, callback) => {
 };
 
 module.exports.cafeterias = (page, callback) => {
-    const $ = cheerio.load(page);
-    
-    // hard coding hell yeah!
-    // have no idea whats going on
-    const cafeteria = 'cafeteria';
-    const floor = 'floor';
-    const days = ['weekdays', 'saturday', 'holidays'];
-    const categories = [
-        cafeteria,
-        'location',
-        floor,
-        'chairs',
-        'target',
-        days[0],
-        days[1],
-        days[2]
-    ];
-    const secondLineColumnOffset = 2;
-    
-    const trs = $('#Content tr');
-    
-    trs.filter((_, v) => $(v).text().trim()).each((i, tr) => {
-        const tds = $(tr).find('td');
-        const mod = tds.first().text().trim() ? 0 : 1;
-        const result = {
-            hours: []
-        };
+    const {document} = (new JSDOM(page)).window;
+
+    const header = querySelectorArray(document, 'thead th:not([colspan])');
+    const nameIndex = 0;
+    const locationIndex = 1;
+
+    const info = {};
+    let cafeteria = null;
+    let floor = null;
+    querySelectorArray(document, 'tbody tr').forEach(row => {
+        const cells = querySelectorArray(row, 'td');
+
+        const isFullRow = cells.length >= header.length;
+        if (isFullRow) {
+            const name = cells[nameIndex];
+            cafeteria = normalize(name.textContent);
+
+            const location = cells[locationIndex];
+            info[cafeteria] = Object.assign(
+                {},
+                info[cafeteria] || {},
+                { location: normalize(location.textContent) }
+            );
+
+            cells.splice(cells.findIndex(x => x === name), 1);
+            cells.splice(cells.findIndex(x => x === location), 1);
+        }
+
+        const mayContainFloor = cells.length > 5;
+        if (mayContainFloor) {
+            floor = normalize(cells[0].textContent);
+            cells.splice(0, 1);
+        }
         
-        const _floor = floor;
-        const inserted = {};
-        tds.filter(i => i % 2 === mod).each((i, td) => {
-            const category = categories[i + (mod === 0 ? 0 : secondLineColumnOffset)];
-            td = $(td);
-            if (category === cafeteria) {
-                td.html(td.html().replace(/(\s+|\n)/g, ' '));
-                td.html(td.html().replace(/(<.+?>.*)<br>.*(<.+?>)/, '$1$2'));
+        const [size, _, weekdays, saturday, holidays] = cells;
+
+        const specialTypes = /(채식)/;
+        const specialTypeMatches = size.textContent.match(specialTypes);
+        if (specialTypeMatches) {
+            floor = normalize(specialTypeMatches[1]);
+        }
+
+        function parseHours(s) {
+            const numeralHours = /(\d+:\d+)-(\d+:\d+)/;
+            const specialHours = /분식/;
+            if (!s.match(numeralHours)) {
+                return [s];
             }
-            const text = td.text().trim();
-            
-            if (categories.indexOf(category) < secondLineColumnOffset) {
-                result[category] = text;
-            } else {
-                if (category === floor) {
-                    _floor = text;
-                } if (days.indexOf(category) != -1) {
-                    text = text.replace(/ ?[-~] ?/g, '-');
-                    
-                    const hour = function(regex) {
-                        const matches = text.match(regex);
-                        if (!matches) return null;
-                        return matches.map(x => x.match(/[0-9:]+/)[0]);
-                    };
-                    
-                    const opens_at = hour(/[0-9]{2}:[0-9]{2}\-/g);
-                    const closes_at = hour(/\-[0-9]{2}:[0-9]{2}/g);
-                    
-                    const dupe = inserted[_floor + text];
-                    if (isFinite(dupe)) {
-                        result.hours[dupe].conditions.day.push(category);
-                    } else if (opens_at || closes_at) {
-                        result.hours.push({
-                            conditions: {
-                                floor: _floor,
-                                day: [category]
-                            },
-                            opens_at: opens_at,
-                            closes_at: closes_at
-                        });
-                        inserted[_floor + text] = result.hours.length - 1;
-                    }
+            if (s.match(specialHours)) {
+                return [s];
+            }
+            return s.split(/\n+/)
+                .map(normalize)
+                .map(x => x.match(numeralHours))
+                .filter(x => x)
+                .map(x => [x[1], x[2]]);
+        }
+        const hours = {
+            weekdays: parseHours(weekdays.textContent),
+            saturday: parseHours(saturday.textContent),
+            holidays: parseHours(holidays.textContent)
+        };
+
+        function isEqualEntry(a, b) {
+            return a.floor === b.floor &&
+                a['opens_at'] === b['opens_at'] &&
+                a['closes_at'] === b['closes_at'];
+        }
+        const aggregatedHours = Object.keys(hours)
+            .reduce((acc, day) => {
+                const newEntry = hours[day].map(item => ({
+                    day: [day],
+                    floor: floor,
+                    'opens_at': (typeof item === 'string') ? item : item[0],
+                    'closes_at': (typeof item === 'string') ? item : item[1],
+                }));
+                return acc.concat(newEntry);
+            }, [])
+            .reduce((acc, x) => {
+                const equalEntry = acc.find(y => isEqualEntry(x, y));
+                if (!equalEntry) {
+                    return acc.concat(x);
                 }
-            }
-        });
-        callback(result);
+                equalEntry.day.push(...x.day);
+                return acc;
+            }, [])
+            .map(x => ({conditions: x}));
+        info[cafeteria] = Object.assign(
+            {},
+            info[cafeteria] || {},
+            { hours: aggregatedHours }
+        );
     });
+    callback(info);
 };

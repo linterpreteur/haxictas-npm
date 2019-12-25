@@ -23,7 +23,7 @@ module.exports.menus = (date, callback) => {
 };
 
 module.exports.cafeterias = (callback) => {
-    const url = 'http://snuco.com/html/restaurant/restaurant_management.asp';
+    const url = 'http://snuco.snu.ac.kr/ko/node/20';
     httpHandler.get(
         url,
         null,
