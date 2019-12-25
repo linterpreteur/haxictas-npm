@@ -40,9 +40,9 @@ function load(rootDirectory) {
     return data;
 }
 
-module.exports = function() {
+module.exports = function(...args) {
     const data = load(defaultStrategies);
-    Array.prototype.forEach.call(arguments, directory => {
+    args.forEach(directory => {
         Object.assign(data, load(directory));
     });
     return data;
