@@ -1,7 +1,7 @@
 {
   "name": "haxictas",
   "version": "2.1.1",
-  "description": "Fetch SNU cafeteria menus",
+  "description": "Fetches SNU cafeteria data at your convenience.",
   "main": "index.js",
   "dependencies": {
     "axios": "^0.19.0",
