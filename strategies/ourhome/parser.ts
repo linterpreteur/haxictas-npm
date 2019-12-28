@@ -1,19 +1,20 @@
-const cheerio = require('cheerio');
-const prices = require('./prices');
+import * as cheerio from 'cheerio';
+import prices from './prices';
+import {MenuParams, MenuCallback, CafeteriaParams, CafeteriaCallback, CafeteriaData} from '../../parser';
 
-module.exports.menus = ({data: page}, callback) => {
+export function menus({data: page, date: startDate}: MenuParams, callback: MenuCallback) {
     const cached = this.cached = this.cached || {};
     const $ = cheerio.load(page);
 
-    const parsePrice = (board) => {
+    const parsePrice = (board: Cheerio) => {
         const price = {};
         const lis = board.find('li');
         if (lis.contents().length) return false;
         lis.each(li => {
             const tag = $(li).attr('class');
-            const value = $(li).text();
+            let value = $(li).text();
             if (value.match(/[0-9]원/)) {
-                value = parseInt(value.replace(/[^0-9]/, ''), 10);
+                value = value.replace(/[^0-9]/, '');
             }
             price[tag] = value;
         });
@@ -27,7 +28,7 @@ module.exports.menus = ({data: page}, callback) => {
         cafeterias[$(td).text().trim()] = i;
     });
     
-    const dates = [];
+    const dates: {cafeteria: string, meals: {[item: string]: number}[]}[][] = [];
     for (let i = 0; i < 7; i++) {
         const date = [];
         for (let j = 0; j < Object.keys(cafeterias).length; j++) {
@@ -41,7 +42,7 @@ module.exports.menus = ({data: page}, callback) => {
     let cafeteria = null;
     
     const meals = ['아침', '점심', '저녁'];
-    let onRemarksCell;
+    let onRemarksCell: boolean;
             
     const isCafeteriaNameCell = (td) => $(td).attr('scope') === 'rowgroup';
     
@@ -78,21 +79,24 @@ module.exports.menus = ({data: page}, callback) => {
     
     dates.forEach((date, day) => {
         date.forEach(cafeteria => {
-            callback({day: day, data: cafeteria});
+            const menuDate = new Date(startDate);
+            menuDate.setDate(startDate.getDate() + (day - startDate.getDay()) % 7);
+            callback({date: menuDate, data: cafeteria});
         });
     });
 };
 
-module.exports.cafeterias = (page, callback) => {
+export function cafeterias(page: CafeteriaParams, callback: CafeteriaCallback) {
     const $ = cheerio.load(page);
     const tables = $('.basic_tbl').filter(i => i < 2);
     
     const onBreakPattern = /\(방학중 ([0-9]{2}:[0-9]{2})\)/;
     
     tables.each((i, table) => {
-        const result = {
+        const result: CafeteriaData = {
             cafeteria: i === 0 ? '919동' : '아워홈',
-            hours: []
+            hours: [],
+            location: undefined
         };
         
         $(table).find('tr').each((i, tr) => {
@@ -100,7 +104,7 @@ module.exports.cafeterias = (page, callback) => {
             if (i > 3) {
                 result.location = tds.first().text().trim();
             } else {
-                const search = function(days) {
+                const search = function(days: string[]) {
                     for (let i = 0; i < result.hours.length; i++) {
                         const target = result.hours[i];
                         if (target.conditions.day.every(x => days.indexOf(x) != -1) &&
@@ -111,18 +115,20 @@ module.exports.cafeterias = (page, callback) => {
                     return null;
                 };
                 
-                const update = function(days, hours) {
+                const update = function(days: string[], hours: string[]) {
                     let found = search(days);
                     if (!found) {
                         found = {
-                            conditions: {day: days},
-                            opens_at: [],
-                            closes_at: []
+                            conditions: {
+                                day: days,
+                                opens_at: [],
+                                closes_at: []
+                            },
                         };
                         result.hours.push(found);
                     }
-                    found.opens_at.push(hours[0].trim());
-                    found.closes_at.push(hours[1].trim());
+                    found.conditions.opens_at.push(hours[0].trim());
+                    found.conditions.closes_at.push(hours[1].trim());
                 };
                 
                 tds.each((i, td) => {
@@ -130,7 +136,7 @@ module.exports.cafeterias = (page, callback) => {
                     const tokens = () => text.split('~');
                     let days = [i === 0 ? 'weekdays' : 'weekends'];
                     
-                    if ($(td).attr('colspan') == 2) {
+                    if (parseInt($(td).attr('colspan'), 10) === 2) {
                         days = ['weekdays', 'weekends'];
                     }
                     

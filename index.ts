@@ -1,30 +1,34 @@
-const fs = require('fs');
-const path = require('path');
+import * as fs from 'fs';
+import * as path from 'path';
+import {Scraper} from "./scraper";
+import {Parser} from "./parser";
 
-const defaultStrategies = 'strategies';
+declare function require(id: string): any;
 
-function load(rootDirectory) {
+function load(rootDirectory: string) {
     rootDirectory = path.join(__dirname, rootDirectory);
-    const data = {};
+    const data: {
+        [id: string]: {
+            menus: (date: Date, callback: (x?: {}, err?: {}) => void) => void,
+            cafeterias: (callback: (x?: {}, err?: {}) => void) => void
+        }
+    } = {
+        menus: undefined,
+        cafeterias: undefined
+    };
     const cafeterias = fs.readdirSync(rootDirectory).filter(file => {
         return fs.statSync(path.join(rootDirectory, file)).isDirectory();
     });
     cafeterias.forEach(cafeteria => {
-        const parser = require(`${rootDirectory}/${cafeteria}/parser`);
-        const scraper = require(`${rootDirectory}/${cafeteria}/scraper`);
+        const parser: Parser = require(`${rootDirectory}/${cafeteria}/parser`);
+        const scraper: Scraper = require(`${rootDirectory}/${cafeteria}/scraper`);
         data[cafeteria] = {
             menus: (date, callback) => {
                 scraper.menus(date, function (responseBody, err) {
                     if (err) {
                         return callback(null, err);
                     }
-                    const _callback = (...args) => {
-                        callback(
-                            args[0] && Object.assign({}, args[0], {date: date}),
-                            ...args.slice(1)
-                        )
-                    }
-                    parser.menus(responseBody, _callback);
+                    parser.menus(responseBody, callback);
                 });
             },
             cafeterias: callback => {
@@ -40,8 +44,8 @@ function load(rootDirectory) {
     return data;
 }
 
-module.exports = function(...args) {
-    const data = load(defaultStrategies);
+export default function(...args: string[]) {
+    const data = load('strategies');
     args.forEach(directory => {
         Object.assign(data, load(directory));
     });

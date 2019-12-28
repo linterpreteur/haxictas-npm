@@ -1,10 +1,11 @@
-const {JSDOM} = require('jsdom');
-const {normalize, querySelectorArray} = require('../../lib/utils');
+import {JSDOM} from 'jsdom';
+import {normalize, querySelectorArray} from '../../lib/utils';
+import {MenuParams, MenuCallback, CafeteriaParams, CafeteriaCallback, CafeteriaData} from '../../parser';
 
-module.exports.menus = ({data: page, day}, callback) => {
+export function menus({data: page, date}: MenuParams, callback: MenuCallback) {
     const {document} = (new JSDOM(page)).window;
 
-    function parseMenu(s) {
+    function parseMenu(s: string): {[item: string]: number} {
         return s.split(/\n+/g)
             .map(x => x.match(/(.+?)\s*([\d,.]+원)$/) || x)
             .map(x => (typeof x === 'string') ? [x, '기타'] : [x[1], x[2]])
@@ -22,21 +23,22 @@ module.exports.menus = ({data: page, day}, callback) => {
                 parseMenu(dinner.textContent)
             ]
         };
-        callback({
-            data: data,
-            day: day
-        })
+        callback({data: data, date: date});
     });
 };
 
-module.exports.cafeterias = (page, callback) => {
+export function cafeterias(page: CafeteriaParams, callback: CafeteriaCallback) {
     const {document} = (new JSDOM(page)).window;
 
     const header = querySelectorArray(document, 'thead th:not([colspan])');
     const nameIndex = 0;
     const locationIndex = 1;
 
-    const info = {};
+    const info: CafeteriaData = {
+        cafeteria: undefined,
+        location: undefined,
+        hours: undefined
+    };
     let cafeteria = null;
     let floor = null;
     querySelectorArray(document, 'tbody tr').forEach(row => {

@@ -1,7 +1,8 @@
-const {JSDOM} = require('jsdom');
-const {dedupe, querySelectorArray} = require('../../lib/utils');
+import {JSDOM} from 'jsdom';
+import {MenuParams, MenuCallback} from '../../parser';
+import {dedupe, querySelectorArray} from '../../lib/utils';
 
-module.exports.menus = ({data, day}, callback) => {
+export function menus({data, date}: MenuParams, callback: MenuCallback) {
     const {document} = (new JSDOM(data)).window;
 
     const cafeterias = dedupe(
@@ -9,7 +10,7 @@ module.exports.menus = ({data, day}, callback) => {
             .map((x) => x.textContent.replace(/\n/g, '').trim())
     );
 
-    const menu = {};
+    const menu: {[cafeteria: string]: {[item: string]: number}[]} = {};
     cafeterias.forEach(cafeteria => { menu[cafeteria] = [] });
     
     const cells = querySelectorArray(document, 'td');
@@ -40,7 +41,7 @@ module.exports.menus = ({data, day}, callback) => {
         const priceSymbol = cell.querySelector(priceSelector).textContent.trim();
         const price = parseInt(priceSymbol, 10) * 100;
         const item = (() => {
-            const tmp = cell.cloneNode(true);
+            const tmp = cell.cloneNode(true) as typeof cell;
             const priceNode = tmp.querySelector(priceSelector);
             tmp.removeChild(priceNode);
             return tmp.textContent.replace(/\s{2,}/g, ' ').trim();
@@ -60,9 +61,9 @@ module.exports.menus = ({data, day}, callback) => {
         }
         callback({
             data: data,
-            day: day
+            date: date
         })
     })
 };
 
-module.exports.cafeterias = () => { /* no-op */ };
+export function cafeterias() { /* no-op */ };

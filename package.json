@@ -13,5 +13,10 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/linterpreteur/haxictas.git"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.15",
+    "@types/jsdom": "^12.2.4",
+    "typescript": "^3.7.4"
   }
 }

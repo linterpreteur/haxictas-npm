@@ -1,17 +1,17 @@
-const qs = require('querystring');
-const httpHandler = require('../../lib/http-handler');
+import * as httpHandler from '../../lib/http-handler';
+import {MenuCallback, CafeteriaCallback} from '../../scraper';
 
-module.exports.menus = (date, callback) => {
+export function menus(date: Date, callback: MenuCallback) {
     const dateString = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
     const url = `http://snuco.snu.ac.kr/ko/foodmenu?field_menu_date_value[value][date]=${dateString}`;
     httpHandler.get(
         url,
         null,
-        (res, err) => callback({data: res, day: date.getDay()}, err)
+        (res, err) => callback({data: res, date: date}, err)
     )
 };
 
-module.exports.cafeterias = (callback) => {
+export function cafeterias(callback: CafeteriaCallback) {
     const url = 'http://snuco.snu.ac.kr/ko/node/20';
     httpHandler.get(
         url,

@@ -1,21 +1,21 @@
-const haxictas = require('..')('./example/third_party');
+import {CafeteriaData, MenuData} from "../parser";
 
-const cafeteriasCallback = id => (info, err) => {
+import load from '..';
+const haxictas = load('./example/third_party');
+
+const cafeteriasCallback = (id: string) => (info: CafeteriaData, err: {}) => {
     if (err) {
         return console.error(err);
     }
     console.log(id, JSON.stringify(info, null, 2));
 };
 
-const menusCallback = id => (result, err) => {
+const menusCallback = (id: string) => (result: MenuData, err: {}) => {
     if (err) {
         return console.error(err);
     }
-    let {date, day, data} = result;
-    date = new Date(date);
-    date.setDate(date.getDate() + (day - date.getDay()) % 7);
-    data.date = date.valueOf();
-    console.log(id, date.toString(), day, JSON.stringify(data, null, 2));
+    let {date, data} = result;
+    console.log(id, date && date.toString(), JSON.stringify(data, null, 2));
 };
 
 haxictas.snuco.cafeterias(cafeteriasCallback('snuco'));

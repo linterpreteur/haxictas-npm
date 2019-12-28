@@ -1,6 +1,9 @@
-module.exports = {
+import { Scraper } from "../../../scraper";
+
+module.exports = <Scraper>{
     menus: (date, callback) => {
         callback({
+            date: date,
             data: `
             <div>
                 <h1>새로운 식당</h1>
@@ -11,9 +14,8 @@ module.exports = {
         });
     },
     cafeterias: (callback) => {
-        callback({
-            data: `
-            <div>
+        callback(
+            `<div>
                 <h1>새로운 식당</h1>
                 <div class="address">사범대 어딘가</div>
                 <h3>3층</h3>
@@ -26,6 +28,6 @@ module.exports = {
                     13:00 ~ 18:00
                 </div>
             </div>`
-        });
+        );
     }
 };
