@@ -1,15 +1,15 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import {Scraper} from "./scraper";
-import {Parser} from "./parser";
+import {Parser, MenuData, CafeteriaData} from "./parser";
 
 declare function require(id: string): any;
 
 function load(rootDirectory: string) {
     const data: {
         [id: string]: {
-            menus: (date: Date, callback: (x?: {}, err?: {}) => void) => void,
-            cafeterias: (callback: (x?: {}, err?: {}) => void) => void
+            menus: (date: Date, callback: (x?: MenuData, err?: {}) => void) => void,
+            cafeterias: (callback: (x?: CafeteriaData, err?: {}) => void) => void
         }
     } = {
         menus: undefined,
