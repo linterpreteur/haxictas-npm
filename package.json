@@ -12,7 +12,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/linterpreteur/haxictas.git"
+    "url": "git://github.com/wooseopkim/haxictas.git"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.15",
