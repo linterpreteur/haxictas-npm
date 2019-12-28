@@ -2,20 +2,18 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {Scraper} from "./scraper";
 import {Parser, MenuData, CafeteriaData} from "./parser";
-import { parse } from 'querystring';
 
 declare function require(id: string): any;
 
+type Haxictas = {
+    [id: string]: {
+        menus: (date: Date, callback: (x?: MenuData, err?: {}) => void) => void,
+        cafeterias: (callback: (x?: CafeteriaData, err?: {}) => void) => void
+    }
+};
+
 function load(rootDirectory: string) {
-    const data: {
-        [id: string]: {
-            menus: (date: Date, callback: (x?: MenuData, err?: {}) => void) => void,
-            cafeterias: (callback: (x?: CafeteriaData, err?: {}) => void) => void
-        }
-    } = {
-        menus: undefined,
-        cafeterias: undefined
-    };
+    const data: Haxictas = {};
     const rootPath = path.resolve(rootDirectory);
     const cafeterias = fs.readdirSync(rootPath).filter(file => {
         return fs.statSync(path.join(rootPath, file)).isDirectory();
