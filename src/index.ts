@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {Scraper} from "./scraper";
 import {Parser, MenuData, CafeteriaData} from "./parser";
+import { parse } from 'querystring';
 
 declare function require(id: string): any;
 
@@ -23,7 +24,7 @@ function load(rootDirectory: string) {
         const parser: Parser = require(`${rootPath}/${cafeteria}/parser`);
         const scraper: Scraper = require(`${rootPath}/${cafeteria}/scraper`);
         data[cafeteria] = {
-            menus: (date, callback) => {
+            menus: (scraper.menus && parser.menus) && function(date, callback) {
                 scraper.menus(date, function (responseBody, err) {
                     if (err) {
                         return callback(null, err);
@@ -31,7 +32,7 @@ function load(rootDirectory: string) {
                     parser.menus(responseBody, callback);
                 });
             },
-            cafeterias: callback => {
+            cafeterias: (scraper.cafeterias && parser.cafeterias) && function(callback) {
                 scraper.cafeterias((responseBody, err) => {
                     if (err) {
                         return callback(null, err);

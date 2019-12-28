@@ -65,5 +65,3 @@ export function menus({data, date}: MenuParams, callback: MenuCallback) {
         })
     })
 };
-
-export function cafeterias() { /* no-op */ };
