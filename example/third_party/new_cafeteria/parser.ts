@@ -1,4 +1,4 @@
-import {Parser} from "../../../parser";
+import {Parser} from "../../../src/parser";
 
 module.exports = <Parser>{
     menus: ({date}, callback) => {

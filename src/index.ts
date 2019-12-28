@@ -6,7 +6,6 @@ import {Parser} from "./parser";
 declare function require(id: string): any;
 
 function load(rootDirectory: string) {
-    rootDirectory = path.join(__dirname, rootDirectory);
     const data: {
         [id: string]: {
             menus: (date: Date, callback: (x?: {}, err?: {}) => void) => void,
@@ -16,12 +15,13 @@ function load(rootDirectory: string) {
         menus: undefined,
         cafeterias: undefined
     };
-    const cafeterias = fs.readdirSync(rootDirectory).filter(file => {
-        return fs.statSync(path.join(rootDirectory, file)).isDirectory();
+    const rootPath = path.resolve(rootDirectory);
+    const cafeterias = fs.readdirSync(rootPath).filter(file => {
+        return fs.statSync(path.join(rootPath, file)).isDirectory();
     });
     cafeterias.forEach(cafeteria => {
-        const parser: Parser = require(`${rootDirectory}/${cafeteria}/parser`);
-        const scraper: Scraper = require(`${rootDirectory}/${cafeteria}/scraper`);
+        const parser: Parser = require(`${rootPath}/${cafeteria}/parser`);
+        const scraper: Scraper = require(`${rootPath}/${cafeteria}/scraper`);
         data[cafeteria] = {
             menus: (date, callback) => {
                 scraper.menus(date, function (responseBody, err) {
@@ -45,7 +45,7 @@ function load(rootDirectory: string) {
 }
 
 export default function(...args: string[]) {
-    const data = load('strategies');
+    const data = load('./src/strategies');
     args.forEach(directory => {
         Object.assign(data, load(directory));
     });

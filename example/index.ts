@@ -1,7 +1,7 @@
-import {CafeteriaData, MenuData} from "../parser";
+import {CafeteriaData, MenuData} from "../src/parser";
 
-import load from '..';
-const haxictas = load('./example/third_party');
+import load from '../src';
+const haxictas = load(`${__dirname}/third_party`);
 
 const cafeteriasCallback = (id: string) => (info: CafeteriaData, err: {}) => {
     if (err) {

@@ -1,4 +1,4 @@
-import { Scraper } from "../../../scraper";
+import {Scraper} from "../../../src/scraper";
 
 module.exports = <Scraper>{
     menus: (date, callback) => {

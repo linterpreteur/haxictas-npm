@@ -1,4 +1,4 @@
-type MenuData = {
+export type MenuData = {
   data: {
       cafeteria: string,
       meals: {[item: string]: string|number}[]
@@ -9,7 +9,7 @@ type MenuData = {
 export type MenuParams = {data: string, date: Date};
 export type MenuCallback = (x?: MenuData, err?: {}) => void;
 
-type CafeteriaData = {
+export type CafeteriaData = {
   cafeteria: string,
   location: string,
   hours: {conditions: {day: string[], floor?: string, opens_at: string[], closes_at: string[]}}[]

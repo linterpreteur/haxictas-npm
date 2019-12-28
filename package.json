@@ -2,7 +2,13 @@
   "name": "haxictas",
   "version": "3.0.0",
   "description": "Fetches SNU cafeteria data at your convenience.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prepublish": "tsc",
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
   "dependencies": {
     "axios": "^0.19.0",
     "cheerio": "^1.0.0-rc.3",
