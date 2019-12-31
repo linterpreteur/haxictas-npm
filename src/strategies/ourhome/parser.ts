@@ -1,6 +1,15 @@
 import * as cheerio from 'cheerio';
-import prices from './prices';
 import {MenuParams, MenuCallback, CafeteriaParams, CafeteriaCallback, CafeteriaData} from '../../parser';
+
+const defaultPrices = {
+	menu_a: 2000,
+	menu_b: 2500,
+	menu_c: 3000,
+	menu_d: 3500,
+	menu_e: 4000,
+	menu_f: 5000,
+	none: '기타'
+};
 
 export function menus({data: page, date: startDate}: MenuParams, callback: MenuCallback) {
     const cached = this.cached = this.cached || {};
@@ -21,7 +30,7 @@ export function menus({data: page, date: startDate}: MenuParams, callback: MenuC
         return price;
     };
     
-    cached.price = parsePrice($('.board')) || cached.price || prices;
+    cached.price = parsePrice($('.board')) || cached.price || defaultPrices;
     
     const cafeterias = {};
     $('td[scope=rowgroup]').each((i, td) => {
@@ -68,7 +77,7 @@ export function menus({data: page, date: startDate}: MenuParams, callback: MenuC
             lis.each((_, li) => {
                 const item = $(li).text().trim();
                 const symbol = $(li).attr('class');
-                const price = cached.price[symbol] || prices.none;
+                const price = cached.price[symbol] || defaultPrices.none;
                 
                 result['meals'][meal][item] = price;
             });

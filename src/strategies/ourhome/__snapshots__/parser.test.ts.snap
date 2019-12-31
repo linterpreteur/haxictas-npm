@@ -1,0 +1,425 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cafeterias parses given page 1`] = `
+Object {
+  "cafeteria": "919동",
+  "hours": Array [
+    Object {
+      "conditions": Object {
+        "closes_at": Array [
+          "09:30",
+        ],
+        "day": Array [
+          "weekdays",
+          "break",
+        ],
+        "opens_at": Array [
+          "08:00",
+        ],
+      },
+    },
+    Object {
+      "conditions": Object {
+        "closes_at": Array [
+          "09:30",
+          "13:30",
+          "19:30",
+        ],
+        "day": Array [
+          "weekdays",
+        ],
+        "opens_at": Array [
+          "07:30",
+          "11:30",
+          "17:30",
+        ],
+      },
+    },
+    Object {
+      "conditions": Object {
+        "closes_at": Array [
+          "09:30",
+          "13:30",
+          "19:30",
+        ],
+        "day": Array [
+          "weekends",
+        ],
+        "opens_at": Array [
+          "08:00",
+          "11:30",
+          "17:30",
+        ],
+      },
+    },
+  ],
+  "location": "919A동 지하 1층",
+}
+`;
+
+exports[`cafeterias parses given page 2`] = `
+Object {
+  "cafeteria": "아워홈",
+  "hours": Array [
+    Object {
+      "conditions": Object {
+        "closes_at": Array [
+          "09:30",
+        ],
+        "day": Array [
+          "weekdays",
+          "break",
+        ],
+        "opens_at": Array [
+          "08:00",
+        ],
+      },
+    },
+    Object {
+      "conditions": Object {
+        "closes_at": Array [
+          "09:30",
+        ],
+        "day": Array [
+          "weekdays",
+        ],
+        "opens_at": Array [
+          "07:30",
+        ],
+      },
+    },
+    Object {
+      "conditions": Object {
+        "closes_at": Array [
+          "09:30",
+        ],
+        "day": Array [
+          "weekends",
+        ],
+        "opens_at": Array [
+          "08:00",
+        ],
+      },
+    },
+    Object {
+      "conditions": Object {
+        "closes_at": Array [
+          "13:30",
+          "19:30",
+        ],
+        "day": Array [
+          "weekdays",
+          "weekends",
+        ],
+        "opens_at": Array [
+          "11:30",
+          "17:30",
+        ],
+      },
+    },
+  ],
+  "location": "901동 1층",
+}
+`;
+
+exports[`menus parses given page 1`] = `
+Object {
+  "data": Object {
+    "cafeteria": "아워홈",
+    "meals": Array [
+      Object {
+        "사골우거지국": 3000,
+        "토스트,씨리얼": 2500,
+      },
+      Object {
+        "얼큰감자수제비&햄전": 4000,
+        "제육장조림버터비빔밥&해시브라운": 4000,
+      },
+      Object {
+        "뚝배기제육불고기": 4000,
+      },
+    ],
+  },
+  "date": 1969-12-28T00:00:00.000Z,
+}
+`;
+
+exports[`menus parses given page 2`] = `
+Object {
+  "data": Object {
+    "cafeteria": "919동",
+    "meals": Array [
+      Object {
+        "쇠고기브로콜리볶음": 3000,
+      },
+      Object {
+        "설렁탕": 3000,
+        "핫커리치킨까스": 4000,
+      },
+      Object {
+        "두부와쇠고기볶음": 3000,
+      },
+    ],
+  },
+  "date": 1969-12-28T00:00:00.000Z,
+}
+`;
+
+exports[`menus parses given page 3`] = `
+Object {
+  "data": Object {
+    "cafeteria": "아워홈",
+    "meals": Array [
+      Object {
+        "콩비지찌개": 3000,
+        "토스트씨리얼우유": 2500,
+      },
+      Object {
+        "제주돼지김치짜글이&라면사리": 4000,
+        "통베이컨볶음밥&계란후라이": 4000,
+      },
+      Object {
+        "돌솥치즈닭갈비덮밥": 4000,
+      },
+    ],
+  },
+  "date": 1969-12-29T00:00:00.000Z,
+}
+`;
+
+exports[`menus parses given page 4`] = `
+Object {
+  "data": Object {
+    "cafeteria": "919동",
+    "meals": Array [
+      Object {
+        "무쇠고기국&생선까스": 3000,
+      },
+      Object {
+        "제육쭈꾸미볶음": 4000,
+        "콩나물국밥": 2500,
+      },
+      Object {
+        "모듬버섯불고기": 3500,
+        "새우튀김돈까스벤또": 4000,
+      },
+    ],
+  },
+  "date": 1969-12-29T00:00:00.000Z,
+}
+`;
+
+exports[`menus parses given page 5`] = `
+Object {
+  "data": Object {
+    "cafeteria": "아워홈",
+    "meals": Array [
+      Object {
+        "순두부찌개": 3000,
+        "토스트씨리얼우유": 2500,
+      },
+      Object {
+        "잔치국수&김밥": 4000,
+        "카레돈까스": 4000,
+      },
+      Object {
+        "에그함박스테이크": 4000,
+      },
+    ],
+  },
+  "date": 1969-12-30T00:00:00.000Z,
+}
+`;
+
+exports[`menus parses given page 6`] = `
+Object {
+  "data": Object {
+    "cafeteria": "919동",
+    "meals": Array [
+      Object {
+        "단호박밥&불고기": 3000,
+      },
+      Object {
+        "고등어김치조림": 3500,
+        "돌솥갈비탕": 3000,
+      },
+      Object {
+        "(5500원)아보카도명란마요덮밥&육즙함박": "기타",
+        "순살양념치킨": 3500,
+      },
+    ],
+  },
+  "date": 1969-12-30T00:00:00.000Z,
+}
+`;
+
+exports[`menus parses given page 7`] = `
+Object {
+  "data": Object {
+    "cafeteria": "아워홈",
+    "meals": Array [
+      Object {
+        "나물비빔밥": 3000,
+        "토스트씨리얼우유": 2500,
+      },
+      Object {
+        "★HAPPY NEW YEAR★": "기타",
+        "새해에는떡만두국&모듬전": 4000,
+      },
+      Object {
+        "참치김치찌개": 4000,
+      },
+    ],
+  },
+  "date": 1969-12-31T00:00:00.000Z,
+}
+`;
+
+exports[`menus parses given page 8`] = `
+Object {
+  "data": Object {
+    "cafeteria": "919동",
+    "meals": Array [
+      Object {
+        "두부명란찌개": 2500,
+      },
+      Object {
+        "갈비구이": 4000,
+        "사골떡만두국": 3000,
+      },
+      Object {
+        "해물잡채덮밥": 3000,
+      },
+    ],
+  },
+  "date": 1969-12-31T00:00:00.000Z,
+}
+`;
+
+exports[`menus parses given page 9`] = `
+Object {
+  "data": Object {
+    "cafeteria": "아워홈",
+    "meals": Array [
+      Object {},
+      Object {},
+      Object {},
+    ],
+  },
+  "date": 1970-01-01T00:00:00.000Z,
+}
+`;
+
+exports[`menus parses given page 10`] = `
+Object {
+  "data": Object {
+    "cafeteria": "919동",
+    "meals": Array [
+      Object {
+        "어묵김치국": 3000,
+        "제육김치두루치기": 3000,
+        "토스트씨리얼우유": 2500,
+      },
+      Object {
+        "나가사키짬뽕&미니날치알밥": 5000,
+        "닭개장&당면사리": 4000,
+        "돌솥순두부계란동동": 3000,
+        "치즈돈까스&쫄면": 4000,
+      },
+      Object {
+        "밀푀유나베": 4000,
+        "지코바치킨덮밥&누룽지샐러드": 4000,
+        "훈제오리볶음밥": 3500,
+      },
+    ],
+  },
+  "date": 1970-01-01T00:00:00.000Z,
+}
+`;
+
+exports[`menus parses given page 11`] = `
+Object {
+  "data": Object {
+    "cafeteria": "아워홈",
+    "meals": Array [
+      Object {
+        "얼큰수제비국&해물완자고추장조림": 3000,
+        "토스트씨리얼우유": 2500,
+      },
+      Object {
+        "뚝배기버섯불고기&당면사리": 4000,
+        "치즈오븐스파게티": 4000,
+      },
+      Object {
+        "돌솥제육비빔밥": 4000,
+      },
+    ],
+  },
+  "date": 1970-01-02T00:00:00.000Z,
+}
+`;
+
+exports[`menus parses given page 12`] = `
+Object {
+  "data": Object {
+    "cafeteria": "919동",
+    "meals": Array [
+      Object {
+        "어묵탕": 2500,
+      },
+      Object {
+        "돌솥감자탕": 3000,
+        "불닭마요덮밥": 3500,
+      },
+      Object {
+        "(5500원)레몬크림새우&짜장면": "기타",
+        "오삼불고기": 3000,
+      },
+    ],
+  },
+  "date": 1970-01-02T00:00:00.000Z,
+}
+`;
+
+exports[`menus parses given page 13`] = `
+Object {
+  "data": Object {
+    "cafeteria": "아워홈",
+    "meals": Array [
+      Object {
+        "콩나물해장국&계란후라이": 3000,
+        "토스트씨리얼우유": 2500,
+      },
+      Object {
+        "닭곰탕&소면사리/미트볼케찹조림": 4000,
+        "마파두부덮밥": 4000,
+      },
+      Object {
+        "제육두부찌개&생선까스": 4000,
+      },
+    ],
+  },
+  "date": 1970-01-03T00:00:00.000Z,
+}
+`;
+
+exports[`menus parses given page 14`] = `
+Object {
+  "data": Object {
+    "cafeteria": "919동",
+    "meals": Array [
+      Object {
+        "해물된장찌개": 3000,
+      },
+      Object {
+        "쇠고기버섯전골": 3000,
+        "안동식짐닭&당면사리": 4000,
+      },
+      Object {
+        "마라우육덮밥": 3500,
+      },
+    ],
+  },
+  "date": 1970-01-03T00:00:00.000Z,
+}
+`;

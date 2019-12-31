@@ -78,10 +78,10 @@ export function cafeterias(page: CafeteriaParams, callback: CafeteriaCallback) {
             const numeralHours = /(\d+:\d+)-(\d+:\d+)/;
             const specialHours = /분식/;
             if (!s.match(numeralHours)) {
-                return [s];
+                return [normalize(s)];
             }
             if (s.match(specialHours)) {
-                return [s];
+                return [normalize(s)];
             }
             return s.split(/\n+/)
                 .map(normalize)

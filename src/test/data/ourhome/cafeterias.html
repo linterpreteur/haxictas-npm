@@ -1,0 +1,1702 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title> 서울대학교 관악학생생활관 </title>
+<link rel="stylesheet" type="text/css" href="/dk_main/css/style_change.css" />	
+<script type="text/javascript" src="/dk_main/js/jquery-1.8.3.min.js" ></script>
+<script type="text/javascript" src="/dk_main/js_new/jquery.fontSizer.js"></script>
+<script type="text/javascript" src="/dk_main/js_new/common.js?2"></script>
+
+<script language="javascript">
+// 자바스크립트에서 사용하는 전역변수 선언
+var dk_path      = "..";
+var dk_bbs       = "dk_bbs";
+var dk_bbs_img   = "img";
+var dk_url       = "http://dorm.snu.ac.kr/dk_board";
+var dk_is_member = "";
+var dk_is_admin  = "";
+var dk_dk_table  = "";
+var dk_sca       = "";
+var dk_charset   = "utf-8";
+var dk_cookie_domain = "";
+var dk_is_gecko  = navigator.userAgent.toLowerCase().indexOf("gecko") != -1;
+var dk_is_ie     = navigator.userAgent.toLowerCase().indexOf("msie") != -1;
+</script>
+
+
+<!--
+<body>
+<noscript>
+<p>지원하지 않은 웹브라우저의 경우 자바스크립트가 작동되지 않습니다.</p>
+</noscript>
+<a name="dk_head"></a>-->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38053678-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+//구글 방문통계용 스크립트
+</script></head>
+
+ <body>
+	<!-- skipnav -->
+	<div id="skipnav">
+		<a href="#nav">Main Manu</a>
+		<a href="#content">contents</a>
+	</div>
+	<!-- //skipnav -->
+	
+	<!-- wrap -->
+	<div id="wrap">
+		
+		<!-- header -->
+		<div id="header">
+			<div class="section">
+				<h1><a href="/dk_main/"><img src="/dk_board/images/layout/h1_logo.png" alt="관악사메인" /></a></h1>
+
+				<!-- top -->
+				<div class="top_menu">
+					<h2 class="blind">회원서비스바로가기</h2>
+					<ul class="f_right">
+					    <!-- 신입생 로그인은 없음 
+						<li><a href="/dk_board/dk_bbs/login_new.php">신입생 로그인</a></li>
+						-->
+						<!-- 비번 찾기 기능 없음
+						<li class="last"><a href="#"  onClick="window.open('https://cupido.snu.ac.kr:58080/SNU_IDM/portals/std/snu/change_pwd_hint.jsp', 'ADpop','resizable=no,status=no,toolbar=no,menubar=no,width=840,height=500,scrollbars=no');return false" -nFocus="blur()" title="새창">ID PW찾기</a></li>
+						-->
+					    
+						<li class="log_btn"><a href="/sso_login.php"><img src="/dk_main/images/btn/btn_top_log.gif" alt="MySNU로그인" /></a></li>
+						<li class="last"><a href="/eng/"><img src="/dk_main/images/btn/btn_top_en.gif" alt="MySNU로그인" /></a></li>
+
+					</ul>
+				 </div>  
+
+				<!-- //top -->
+
+				<!-- nav -->				
+				<h2 class="blind">메인메뉴</h2>
+				<div id="nav" class="nav">
+					<ul>
+						<li v-for="rs,key,idx in menuMap" :class="rs.active?'on':''">
+							<a :href="rs.url">
+								<span >{{ rs.grSubject  }}</span>				
+							</a>
+							<ul :class="'nav_sub nav_sub0'+(idx+1)">
+								<li v-for="rs2,idx2 in rs.children">
+									<a :href="rs2.url" style="color:white">										
+										<span :class="rs2.active?'on':''">{{ rs2.htName  }} </span>
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>					
+				</div>
+				<script src="/dk_board/js/menuMap.js"></script>
+				<script src="/dk_board/js/vue.min.js"></script>
+				<script>					
+					var visualHtml="";
+					new Vue({
+						el:"#nav"
+						,data:{menuMap:menuMap,path:[]}
+						,created:function(){
+							var contentUrl='/dk_board/dk_dormitory/dorm_content.php?ht_id=';
+							var uri=location.href.substring(location.origin.length);
+							var path=this.path;
+							function setLink(rs, asc){								
+								if(rs.parent){								
+									if(rs.parent.children[0]==rs){
+										rs.parent.url=rs.url; 
+									}
+									if( uri.indexOf(rs.url)>-1) {
+										rs.active=true;																		
+									}										
+									if(rs.active) {
+										rs.parent.active=rs.active;										
+									}									
+									setLink(rs.parent);																
+								}						
+							}
+							
+							function createLink(rs){
+								if(rs.htLink && rs.htLink.charAt(0)=="/") rs.url=rs.htLink;
+								else rs.url=contentUrl+rs.htId;	
+								setLink(rs,1);
+								if(rs.children){
+									for(var key in rs.children){
+										rs.children[key].parent=rs;
+										createLink(rs.children[key], rs);										
+									}
+								}																	
+							}
+
+							function createPath(rs){
+								if(rs.active)path[path.length]=rs.grSubject?rs.grSubject:rs.htName;
+								if(rs.children){
+									for(var key in rs.children){
+										createPath(rs.children[key], rs);										
+									}
+								}																	
+							}											
+							
+							for(var key in this.menuMap){ 
+								createLink(this.menuMap[key]);
+								createPath(this.menuMap[key]);
+							}
+							console.log(path);																					
+						}												
+					});			
+
+					function setIframeHeight(ifr){
+						setInterval(function(){
+							try{
+								$(ifr).height($(ifr).contents().height());			
+							}catch(e){}
+						},500);							
+					}
+
+					function goURL(url){
+						location.href=url;
+						location.reload();
+					}										
+				</script>
+			</div>
+		</div>
+		<!-- //header -->		<!-- 컨텐츠 시작 -->
+		<!-- container -->
+		<div id="container">
+			<!-- content -->
+			<div class="content">
+				<!-- navbar -->
+				<div class="navbar_all">
+					<ul class="navbar">
+						<li class="nav_arrow"><a href="../../"><img src="/dk_main/images/sub/img/img_nav_home.gif" class="vam" alt="홈" /></a></li>
+						<li class="nav_arrow"><a href="#">시설안내</a></li>
+						<li class="now">편의시설</li>
+					</ul>
+
+					<!-- 폰트사이즈조절 -->
+					<div id="control-wrap">
+						<h3><img src="../images/btn/font_sizere.gif" alt="폰트크기조절" /></h3>
+						<ul id="controls">
+							<li><a id="fs-minus" class="font_zoom" href="#" title="Smaller Text"></a></li>
+							<li><a id="fs-plus" class="font_zoom" href="#" title="Larger Text"></a></li>
+						</ul>
+					</div>
+					<!-- //폰트사이즈조절 -->
+
+				</div>
+				<!-- //navbar -->
+
+								<!-- sub title area -->
+				<div class="title_area">
+					<h2>
+						<span class="ko">편의시설</span> <span class="en">convenient facilities</span>
+					</h2>
+					<div class="sub_title_area">
+						<p class="sub_title"><span class="st">세계화 시대</span>에 부응하는 교육의 장!</p>
+						<p class="sub_desc">세계 80여개국에서 온 다양한 국적의 학생들이 함께 생활하고 있는 <span class="st">다문화적<br>거주환경</span>은 그 자체로 세계화 시대에 부응하는 훌륭한 교육의 장이 되어줄 것입니다.</p>
+					</div>
+					<div class="sub_visual">
+						<img src="../images/sub/img/img_sub02.jpg" alt="" />
+					</div>
+				</div>
+				<!-- sub title area -->
+
+				<!-- sub_cont -->
+				<div class="sub_cont sub0203 sub02_info"><!---->
+					<!-- 탭 -->
+					<div class="cont_tab">
+						<div class="tab_head">
+							<ul>
+							<li class='on'><a href="#tab_menu01">음식</a></li><li ><a href="#tab_menu02">체육</a></li><li ><a href="#tab_menu03">문화</a></li><li ><a href="#tab_menu04">기타</a></li><li ><a href="#tab_menu05">.</a></li>							</ul>
+						</div>
+
+						<!-- 탭 컨텐츠 -->
+						<div class="tab_area"><!---->
+							<!-- 음식 -->							
+							<div id="tab_menu01" class="tab_sec amenities">
+								<h3 class="blind">음식</h3>
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm01001.jpg" alt="919’ restaurant 919동식당" /></p>
+									<div class="top_blue width_712">
+										<table summary="음식 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="10%" />
+												<col width="*" />
+												<col width="40%" />
+												<col width="40%" />
+											</colgroup>
+											<thead>
+												<tr class="blue_bg">
+													<th scope="col" colspan="2">&nbsp;</th>
+													<th scope="col">평일(월~금)</th>
+													<th scope="col" class="last">주말(토,일)</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<th scope="rowgroup" rowspan="3" class="tac color_bg">운영시간</th>
+													<th scope="row" class="tac color_bg">조식</th>
+													<td class="tac">07:30(방학중 08:00) ~ 09:30</td>
+													<td class="tac last">08:00 ~ 09:30</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">중식</th>
+													<td class="tac">11:30 ~ 13:30</td>
+													<td class="tac last">11:30 ~ 13:30</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">석식</th>
+													<td class="tac">17:30 ~ 19:30</td>
+													<td class="tac last">17:30 ~ 19:30</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치</th>
+													<td colspan="2" class="tac last">919A동 지하 1층</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm01002.jpg" alt="ourhome restaurant 아워홈식당" /></p>
+									<div class="top_blue width_712">
+										<table summary="음식 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="10%" />
+												<col width="*" />
+												<col width="40%" />
+												<col width="40%" />
+											</colgroup>
+											<thead>
+												<tr class="blue_bg">
+													<th scope="col" colspan="2">&nbsp;</th>
+													<th scope="col">평일(월~금)</th>
+													<th scope="col" class="last">주말(토,일)</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<th scope="rowgroup" rowspan="3" class="tac color_bg">운영시간</th>
+													<th scope="row" class="tac color_bg">조식</th>
+													<td class="tac">07:30(방학중 08:00) ~ 09:30</td>
+													<td class="tac last">08:00 ~ 09:30</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">중식</th>
+													<td colspan="2" class="tac last">11:30 ~ 13:30</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">석식</th>
+													<td colspan="2" class="tac last">17:30 ~ 19:30</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치</th>
+													<td colspan="2" class="tac last">901동 1층</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm01003.jpg" alt="cafeteria 매점" /></p>
+									<div class="top_blue width_712">
+										<table summary="음식 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="80%" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">영업시간</th>
+													<td class="last">08:00 ~ 익일 02:00</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">919A동 지하 1층(식당 옆)</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">메뉴</th>
+													<td class="last">각종 스낵류, 음료류, 문구류, 생활용품 등</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">전화번호</th>
+													<td class="last">02-881-9068</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm01004.jpg" alt="convenience store GS 25" /></p>
+									<div class="top_blue width_712">
+										<table summary="음식 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="80%" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">영업시간</th>
+													<td class="last">24시간</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">900동 지하2층</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg min_hre">판매품목</th>
+													<td class="last">각종 스낵류, 음료류, 문구류, 생활용품 등</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">전화번호</th>
+													<td class="last">02-881-9215</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm01005.jpg" alt="globalhouse restaurant 글로벌하우스" /></p>
+									<div class="top_blue width_712">
+										<table summary="음식 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="10%" />
+												<col width="10%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="rowgroup" rowspan="2" class="tac color_bg">영업 <br /> 시간</th>
+													<th scope="row" class="tac color_bg">평일</th>											     
+                                                                                                        <td class="last"> </td>
+												</tr>
+                                                                                                <tr>
+                                                                                                        <th scope="row" class="tac color_bg">주말</th>											     
+                                                                                                        <td class="last"> </td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치</th>
+													<td class="last"></td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">메뉴</th>
+													<td class="last"> </td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">비고</th>
+													<td class="last">2017. 06.30 운영종료</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm01006.jpg" alt="snack bar 사랑채 분식집" /></p>
+									<div class="top_blue width_712">
+										<table summary="음식 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="10%" />
+												<col width="10%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" rowspan="2" class="tac color_bg">영업 </br> 시간</th>
+													<th scope="row" class="tac color_bg">평일</th>
+													<td class="last"></td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">주말</th>
+													<td class="last"></td>
+												</tr>
+												<tr>
+													<th scope="row"  colspan="2" class="tac color_bg">위치</th>
+													<td class="last"></td>
+												</tr>
+												<tr>
+													<th scope="row"  colspan="2" class="tac color_bg">메뉴</th>
+													<td class="last"></td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">비고</th>
+													<td class="last">2017. 08. 18 운영종료</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm01007.jpg" alt="10inch Sandwich & Coffee 10인치샌드위치&커피" /></p>
+									<div class="top_blue width_712">
+										<table summary="음식 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="10%" />
+												<col width="10%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" rowspan ="2" class="tac color_bg">영업 </br>시간</th>
+													<th scope="row" class="tac color_bg">평일</th>
+													<td class="last">07:00 ~ 23:00 / 09:00 ~ 22:00(방학)</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">주말</th>
+													<td class="last">08:00 ~ 22:00 / 09:00 ~ 21:30(방학)</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치</th>
+													<td class="last">대학원 생활관 편의상가 내</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">메뉴</th>
+													<td class="last">샌드위치, 커피, 빵, 음료 등</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">전화번호</th>
+													<td class="last">02-881-9211</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm01008.jpg" alt="snack bar 올리브그린" /></p>
+									<div class="top_blue width_712">
+										<table summary="음식 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="10%" />
+												<col width="10%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" rowspan ="3" class="tac color_bg">영업 </br>시간</th>
+													<th scope="row" class="tac color_bg">평일</th>
+													<td class="last">08:30 ~ 22:30 / 09:30 ~ 21:30(방학)</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">주말</th>
+												<td class="last">08:30 ~ 22:30(토),  09:00 ~ 21:00(일), 09:00 ~ 22:00(공휴일) / 09:30 ~ 21:30(방학)</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">휴무</th>
+													<td class="last">방학중(매월 둘째, 넷째 주 일요일) / 학기중(매월 넷째 주 일요일)</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan ="2" class="tac color_bg">위치</th>
+													<td class="last">대학원 생활관 편의상가 내</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan ="2" class="tac color_bg">메뉴</th>
+													<td class="last">김밥류, 돈까스류, 덮밥류, 분식류 등 </td>
+												</tr>
+												<tr>
+													<th scope="row" colspan ="2" class="tac color_bg">전화번호</th>
+													<td class="last">02-881-9207</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm01009.jpg" alt="chicken house 치킨빡스" /></p>
+									<div class="top_blue width_712">
+										<table summary="음식 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">영업시간</th>
+												<td class="last">16:00 ~ 01:00(배달: 18:00 ~ 24:00, 매월 셋째 주 토요일 휴무)</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">대학원 생활관 편의상가 내</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">메뉴</th>
+													<td class="last">치킨, 맥주 등</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">전화번호</th>
+													<td class="last">02-881-9222</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0110.jpg" alt="cafe GRAN" /></p>
+									<div class="top_blue width_712">
+										<table summary="음식 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="80%" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">영업시간</th>
+													<td class="last">07:30 ~ 22:00(평일) / 07:30 ~ 21:00(주말,휴일)</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">901동 1층</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">메뉴</th>
+													<td class="last">커피, 차, 쿠키, 샌드위치, 샐러드 등</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">전화번호</th>
+													<td class="last">02-881-9204</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0111.jpg" alt="cook room 취사실" /></p>
+									<div class="top_blue width_712">
+										<table summary="음식 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="80%" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">영업시간</th>
+													<td class="last">24시간 개방</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">919B동 1층(구 세탁장)</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">시설</th>
+													<td class="last">인덕션, 싱크대, 테이블, 의자 등</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">비고</th>
+													<td class="last">구비 집기류 : 냄비, 후라이팬, 국자 및 뒤집개, 도마</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!-- //음식 -->							<!-- 체육 -->
+							<div id="tab_menu02" class="tab_sec amenities">
+								<h3 class="blind">체육</h3>
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0201.jpg" alt="playground 운동장" /></p>
+									<div class="top_blue width_712">
+										<table summary="체육 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="15%" />
+												<col width="15%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="rowgroup" rowspan="2" class="tac color_bg">이용<br />시간</th>
+													<th scope="row" class="tac color_bg">무료</th>
+													<td class="last">평일 오전 07:00 ~ 09:00  /  년중 야간 20:00 ~ 21:00(독점 사용 금지)  <br/> ★ 주말/공휴일 아침 이용제한</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">유료</th>
+													<td class="last">09:00 ~ 20:00(야간이용시간 : 하절기 19:00~, 동절기 18:00~)</td>
+												</tr>
+												<tr>
+													<th scope="rowgroup" rowspan="2" class="tac color_bg">이용<br />요금</th>
+													<th scope="row" class="tac color_bg">평일</th>
+													<td class="last">시간당 주간 2만원, 야간 3만원(조명시설 사용료 포함)</td>
+												</tr>
+
+												<tr>
+													<th scope="row" class="tac color_bg">주말, </br> 공휴일</th>
+													<td class="last">시간당 주간 3만원, 야간 4만원(조명시설 사용료 포함)</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치</th>
+													<td class="last">906동 뒤</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">예약</th>
+													<td class="last">관악학생생활관 홈페이지 ‘시설이용신청’에서 예약 <a href="/dk_board/facility/facility_reg.php?cls=1" class="btn_reservation"><img src="../images/btn/btn_reservation.gif" alt="예약하기" /></a></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0207.jpg" alt="baseball field 야구연습장" /></p>
+									<div class="top_blue width_712">
+										<table summary="체육 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="15%" />
+												<col width="15%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="rowgroup" rowspan="2" class="tac color_bg">이용<br />시간</th>
+													<th scope="row" class="tac color_bg">하절기</th>
+													<td class="last">09:00 ~ 19:00 (자유이용)</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">동절기</th>
+													<td class="last">09:00 ~ 18:00 (자유이용)</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">이용요금</th>
+													<td class="last">무료</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치</th>
+													<td class="last">906동 뒤</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">문의(전화번호)</th>
+													<td class="last">02-881-9034</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0202.jpg" alt="gym 체육관" /></p>
+									<div class="top_blue width_712">
+										<table summary="체육 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="15%" />
+												<col width="15%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="rowgroup" rowspan="2" class="tac color_bg">이용<br />시간</th>
+													<th scope="row" class="tac color_bg">무료</th>
+													<td class="last">07:00 ~ 09:00, 18:00 ~ 20:00 (독점사용 금지)</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">유료</th>
+													<td class="last">09:00 ~ 18:00</td>
+												</tr>
+												<tr>
+													<th scope="rowgroup" rowspan="2" class="tac color_bg">이용<br />요금</th>
+													<th scope="row" class="tac color_bg">평일</th>
+													<td class="last">입주자 및 학내 구성원 : 시간당 3만원/ 외부인 : 시간당 6만원</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">주말, </br> 공휴일</th>
+													<td class="last">입주자 및 학내 구성원 : 시간당 4만원/ 외부인 : 시간당 8만원</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치</th>
+													<td class="last">900동 지하 2층</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">예약</th>
+													<td class="last">관악학생생활관 홈페이지 ‘시설이용신청’에서 예약 <a href="/dk_board/facility/facility_reg.php?cls=2" class="btn_reservation"><img src="../images/btn/btn_reservation.gif" alt="예약하기" /></a></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0203.jpg" alt="training room 체력단련실" /></p>
+									<div class="top_blue width_712">
+										<table summary="체육 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="15%" />
+												<col width="15%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="rowgroup" rowspan="3" class="tac color_bg">이용<br />시간</th>
+													<th scope="row" class="tac color_bg">평일</th>
+													<td class="last">06:00 ~ 24:00</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">토요일</th>
+													<td class="last">09:00 ~ 22:00</td>
+												</tr>
+
+												<tr>
+													<th scope="row" class="tac color_bg">일요일</th>
+													<td class="last">15:00 ~ 22:00(공휴일 휴무)</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">이용요금</th>
+													<td class="last">1개월 5만원</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치</th>
+													<td class="last">919B동 1층</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">비고</th>
+													<td class="last">매달 최대 700명까지 선착순 모집(체력단련실 홈페이지에서 등록)</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">전화번호</th>
+													<td class="last">02-881-9081</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">홈페이지</th>
+													<td class="last"><a href="https://dorm.snu.ac.kr/dk_board/dk_dormitory/dorm_content.php?ht_id=snu2_10_1" target="b_link" title="새창">http://dorm.snu.ac.kr</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0204.jpg" alt="doubless fitness 휘트니스" /></p>
+									<div class="top_blue width_712">
+										<table summary="체육 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="15%" />
+												<col width="15%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="rowgroup" rowspan="3" class="tac color_bg">운영<br />시간</th>
+													<th scope="row" class="tac color_bg">평일</th>
+													<td class="last">06:00 ~ 24:00</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">토요일</th>
+													<td class="last">07:00 ~ 22:00</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">일요일</th>
+													<td class="last">15:00 ~ 22:00(공휴일 휴무)</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">이용요금</th>
+													<td class="last">★ 매월 이벤트 참조</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치</th>
+													<td class="last">900동 지하 2층</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">전화번호</th>
+													<td class="last">02-881-9235</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">홈페이지</th>
+													<td class="last"><a href="https://blog.naver.com/doubless_fit" target="b_link" title="새창">https://blog.naver.com/doubless_fit</a></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0205.jpg" alt="singing roos 코인노래방" /></p>
+									<div class="top_blue width_712">
+										<table summary="체육 편의시설" class="basic_tbl">
+											
+                                                                                          <colgroup>
+												<col width="15%" />
+												<col width="15%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="rowgroup" rowspan="3" class="tac color_bg">운영<br />시간</th>
+													<th scope="row" class="tac color_bg">평일</th>
+													<td class="last">12:30 ~ 00:30(학기) / 13:30 ~ 00:30(방학) </td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">토요일,공휴일</th>
+													<td class="last">14:00 ~ 00:30</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">일요일</th>
+													<td class="last">14:00 ~ 00:30</td>
+												</tr>
+                                                                                                 <tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치</th>
+													<td class="last">대학원 생활관 편의상가 내</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">전화번호</th>
+													<td class="last">02-881-9230</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+												
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0206.jpg" alt="table tennis room 탁구장" /></p>
+									<div class="top_blue width_712">
+										<table summary="체육 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="30%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">운영시간</th>
+													<td class="last">06:30 ~ 24:00</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">아고리움(920동) 2층</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">비고</th>
+													<td class="last">관악학생생활관 탁구회 동아리방(920동 2층)에서 라켓 대여 가능<br />탁구공은 개별 준비</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!-- //체육 -->							<!-- 문화 -->
+							<div id="tab_menu03" class="tab_sec amenities">
+								<h3 class="blind">문화</h3>
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0301.jpg" alt="ga-on hall 가온홀" /></p>
+									<div class="top_blue width_712">
+										<table summary="문화 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="10%" />
+												<col width="10%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">이용시간</th>
+													<td colspan="2" class="last">09:00 ~ 22:00</td>
+												</tr>
+												<tr>
+													<th scope="rowgroup" rowspan="2" class="tac color_bg">이용<br />요금</th>
+													<th scope="row" class="tac color_bg">평일</th>
+													<td colspan="3" class="last">입주자 및 학내구성원 : 3시간당 10만원/외부단체 : 3시간당 20만원</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">주말,<br />공휴일</th>
+													<td colspan="3" class="last">입주자 및 학내구성원 : 3시간당 15만원/외부단체 : 3시간당 30만원</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치</th>
+													<td colspan="2" class="last">900동 지하 2층</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">예약</th>
+													<td colspan="3" class="last">관악학생생활관 행정실 방문 후 현장 예약 </td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0302.jpg" alt="da-in hall 다인홀" /></p>
+									<div class="top_blue width_712">
+										<table summary="문화 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">이용시간</th>
+													<td class="last">06:00 ~ 21:00</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">이용요금</th>
+													<td class="last">무료</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">920동 지하 1층</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">예약</th>
+													<td class="last">관악학생생활관 홈페이지 ‘시설이용신청’에서 예약 <a href="/dk_board/facility/facility_reg.php?cls=4" class="btn_reservation"><img src="../images/btn/btn_reservation.gif" alt="예약하기" /></a></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0303.jpg" alt="training room 연습실" /></p>
+									<div class="top_blue width_712">
+										<table summary="문화 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">이용시간</th>
+													<td class="last">09:00 ~ 22:00</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">이용요금</th>
+													<td class="last">무료(단, 관악학생생활관 입주자만 이용 가능)</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">900동 지하 2층(가온홀 맞은편) 2개 호실</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">예약</th>
+													<td class="last">관악학생생활관 홈페이지 ‘시설이용신청’에서 예약 <a href="/dk_board/facility/facility_reg.php?cls=5" class="btn_reservation"><img src="../images/btn/btn_reservation.gif" alt="예약하기" /></a></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!-- //문화 -->							<!-- 기타 -->
+							<div id="tab_menu04" class="tab_sec amenities">
+								<h3 class="blind">기타</h3>
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0401.jpg" alt="laundry 세탁소" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">운영시간</th>
+													<td class="last">평일 : 08:30 ~ 22:00 / 09:00 ~ 21:00(방학)<br />토요일 : 08:30 ~18:00 / 09:00 ~ 17:00(방학)<br />일요일 및 공휴일 : 휴무</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">919A동 지하 1층</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">이용서비스</th>
+													<td class="last">각종 의류 드라이 클리닝, 운동화 세탁, 옷 수선 등</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">전화번호</th>
+													<td class="last">02-881-9064</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0402.jpg" alt="wash place 세탁장" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">이용시간</th>
+													<td class="last">24시간 개방</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">919B동 1층(취사실 옆)</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">시설</th>
+													<td class="last">드럼세탁기, 운동화세탁기, 스팀다리미 다림판</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+<!--
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0403.jpg" alt="computer room 정보검색실" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">운영시간</th>
+													<td class="last">평일 : 08:00 ~ 22:00 (방학중 별도 공지)<br />토요일 : 08:00 ~14:00 (방학중 별도 공지)<br />일요일 및 공휴일 : 휴무</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">아고리움(920동) 2층</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">이용서비스</th>
+													<td class="last">PC사용, 복사 및 프린트, 스캐너, 팩스, 제본 등</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">전화번호</th>
+													<td class="last">02-881-9050</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+-->								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0404.jpg" alt="reading room 독서실" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="40%" />
+												<col width="*" />
+											</colgroup>
+											<thead>
+												<tr class="blue_bg">
+													<th>&nbsp;</th>
+													<th scope="col">919동</th>
+													<th scope="col" class="last">901동</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<th scope="row" rowspan="2" class="tac color_bg">운영시간</th>
+													<td class="tac">20:30 ~ 익일 07:00</td>
+													<td class="tac last">20:30 ~ 익일 07:00(※학기중에만 운영)</td>
+												</tr>
+												<tr>
+													<td colspan="2" class="tac last">(※식사시간에는 독서실로 이용 불가)</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="tac">919A동 1층 식당</td>
+													<td class="tac last">901동 1층 식당</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">비고</th>
+													<td colspan="2" class="tac last">무선 인터넷 사용 가능</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0405.jpg" alt="guest house 사랑채" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">이용시간</th>
+													<td class="last">24시간 개방</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">아고리움(920동) 1층</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">이용서비스</th>
+													<td class="last">소파, 테이블, 신문/잡지꽂이, 신문걸이/열람대 등<br />다양한 신문(4종)과 잡지(3종)가 비치되어 있음</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">비고</th>
+													<td class="last">정보검색용 PC 5대(문서출력 가능), 무선 인터넷 사용 가능</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm04012.jpg" alt="ICC  국제문화센터" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">이용시간</th>
+													<td class="last"></td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">아고리움(920동) 1층</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">이용서비스</th>
+													<td class="last">교류, 독서, 커피</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">비고</th>
+													<td class="last"></td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>                              
+                              
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0406.jpg" alt="hair shop 스누헤어" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="10%" />
+												<col width="10%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" rowspan="3" class="tac color_bg">영업시간</th>
+                                                                                                        <th scope="row" class="tac color_bg">평일</th>
+													<td class="last">08:30 ~ 21:00 / 09:00 ~ 20:00(방학)</td>
+												</tr>
+												<tr>
+                                                                                                        <th scope="row" class="tac color_bg">토요일<br>공휴일</th>
+													<td class="last">09:30 ~ 20:00</td>
+												</tr>
+												<tr>
+                                                                                                        <th scope="row" class="tac color_bg">일요일</th>
+													<td class="last">휴무</td>
+												</tr>
+												<tr>
+
+													<th scope="row" colspan = "2" class="tac color_bg">위치</th>
+													<td class="last">대학원생활관 편의상가 내</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan = "2" class="tac color_bg">전화번호</th>
+													<td class="last">02-881-9227</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0407.jpg" alt="pop planners POP플래너스" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="10%" />
+												<col width="10%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="rowgroup" rowspan="3" class="tac color_bg">영업시간</th>
+													<th scope="row" class="tac color_bg">평일</th>
+													<td class="last">08:00 ~ 24:00 / 08:00 ~ 23:00(방학)</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">토요일</th>
+													<td class="last">09:00 ~ 19:00</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">일요일<br>공휴일</th>
+													<td class="last">13:00 ~ 21:00<br>
+                                                                                                                                 13:00 ~ 19:00</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">이용서비스</th>
+													<td class="last">문구/복사, 프린트, 스캔, 팩스, 제본</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치 / 전화번호</th>
+													<td class="last">900동 지하 2층 / 02-881-9220</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0408.jpg" alt="parcel service 택배보관소" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="10%" />
+												<col width="10%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="rowgroup" rowspan="3" class="tac color_bg">영업시간</th>
+													<th scope="row" class="tac color_bg">평일</th>
+													<td class="last">10:00 ~ 21:00 / 10:00 ~ 20:00(방학) <점심 14:00 ~15:00></td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">토요일</th>
+													<td class="last">10:00 ~ 16:00 / 10:00 ~ 15:30(방학) <점심 13:00 ~ 14:00></점심></td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">일요일</th>
+													<td class="last">휴무(공휴일 휴무)</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치</th>
+													<td class="last">901동 지하 1층</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">전화번호</th>
+													<td class="last">02-881-9224</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0409.jpg" alt="issue document 민원발급기" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="5%" />
+												<col width="15%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">이용시간</th>
+													<td class="last">08:00 ~ 24:00</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan="2" class="tac color_bg">위치</th>
+													<td class="last">900동 지하 1층 복도 코너쪽</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan=2" class="tac color_bg">이용서비스</th>
+													<td class="last">관악구 민원발급기</td>
+												</tr>
+												<tr>
+													<th scope="row" colspan=2" class="tac color_bg">비고</th>
+													<td class="last">주민등록등본, 병적증명서, 기초생활수급자 증명 등</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0410.jpg" alt="Automatic Service System 우편자동접수기" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">이용시간</th>
+													<td class="last"></td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last"></td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">이용서비스</th>
+													<td class="last"></td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">비고</th>
+													<td class="last">운영종료</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm04010.jpg" alt="bank ATM 은행ATM" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="15%" />
+												<col width="*" />
+											</colgroup>
+											<thead>
+												<tr class="blue_bg">
+													<th scope="col" colspan="2">이용 시간</th>
+													<th scope="col" class="last">위치</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">우리은행</th>
+													<td class="tac">07:00 ~ 23:00</td>
+													<td class="last">900동 지하 2층 출입구</td>
+												</tr>
+												<tr>
+													<th scope="row" rowspan="2" class="tac color_bg">농협</th>
+													<td class="tac" rowspan="2">07:00 ~ 23:00</td>
+													<td class="last">900동 지하 2층 출입구</td>
+												</tr>
+												<tr>
+													<td class="last">919동 1층 식당 앞</td>
+												</tr>
+												<tr>
+													<th scope="row" rowspan="2" class="tac color_bg">신한은행</th>
+													<td class="tac" rowspan="2">07:00 ~ 23:30</td>
+													<td class="last">900동 지하 2층 출입구</td>
+												</tr>
+												<tr>
+													<td class="last">919동 1층 매점 옆</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm04011.jpg" alt="returning book 도서반납기" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">이용시간</th>
+													<td class="last">24시간 이용가능</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">900동 1층 아워홈 식당 입구, 920동 출입구</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">비고</th>
+													<td class="last">중앙도서관 도서만 반납가능(단대별 도서관 도서 반납 불가)</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+							<!-- //기타 -->							<!-- 시설 
+							<div id="tab_menu04" class="tab_sec amenities">
+								<h3 class="blind">시설</h3>
+
+
+
+								<div class="tbl_sec">
+									<p class="f_left"><img src="../images/sub/img/pic_sm0405.jpg" alt="국제교류센터" /></p>
+									<div class="top_blue width_712">
+										<table summary="기타 편의시설" class="basic_tbl">
+											<colgroup>
+												<col width="20%" />
+												<col width="*" />
+											</colgroup>
+											<tbody>
+												<tr>
+													<th scope="row" class="tac color_bg">이용시간</th>
+													<td class="last">이용시간 내</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">위치</th>
+													<td class="last">아고리움(920동) 1층</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">이용서비스</th>
+													<td class="last">이용서비스</td>
+												</tr>
+												<tr>
+													<th scope="row" class="tac color_bg">비고</th>
+													<td class="last"> </td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>							
+
+							</div>
+		 -->						</div>
+						<!-- //탭 컨텐츠 -->
+						
+					</div>
+					<!-- //탭 -->
+				</div>
+				<!-- //sub_cont -->
+			</div>
+			<!-- //content -->
+		</div>
+		<!-- //container -->
+
+
+<!-- 컨텐츠 끝 -->
+			<!-- footer -->
+		<div id="footer">
+		<!-- 전체메뉴 -->
+			<div class="section full_menu">
+									<div class="menu_box">
+					<h3>관악학생생활관 소개</h3>
+					<ul>
+								<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_4">인사말</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_1_2">역대관장 및 연혁</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_2">현황</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_6_1">구성원소개</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_9">주요시설 연락처</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_7_1">오시는 길</a></li>
+								
+																			</ul>
+				</div>
+								<div class="menu_box">
+					<h3>시설안내</h3>
+					<ul>
+								<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu2_4">행정시설</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu2_10_1">체력단련센터</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu2_11_1">상담센터(관심)</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu2_1_1">편의시설</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu2_5_0">시설이용안내</a></li>
+								
+															<li><a href="/dk_board/facility/facility_reg.php">시설이용신청</a></li>
+								
+															<li><a href="/dk_board/facility/facility_reg_state.php">시설수납조회</a></li>
+								
+																			</ul>
+				</div>
+								<div class="menu_box">
+					<h3>커뮤니티</h3>
+					<ul>
+								<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=notice">공지사항</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=board">게시판</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=schedule_year">연간일정</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu8_3_1">문화생활</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu8_4_1">입주자자치회</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu8_5_1">동아리</a></li>
+								
+																			</ul>
+				</div>
+								<div class="menu_box">
+					<h3>학생생활관</h3>
+					<ul>
+								<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu3_5_1">학부생활관</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu3_6_1">대학원생활관</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu3_1_1">입주안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu3_2_1">퇴거안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu3_4_1">생활안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu3_3_2">생활규정</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=repair1">민원/수리접수</a></li>
+								
+																			</ul>
+				</div>
+								<div class="menu_box">
+					<h3>가족생활관</h3>
+					<ul>
+								<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu5_2_1">가족생활관 소개</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu5_3_1">입주안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu5_4">퇴거안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu5_5">생활안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu5_6_1">생활규정</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu5_1">민원/수리접수</a></li>
+								
+																			</ul>
+				</div>
+								<div class="menu_box">
+					<h3>BK생활관</h3>
+					<ul>
+								<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu4_12_1">BK생활관 소개</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu4_13_1">입주안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu4_15_1">퇴거안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=sun4_14">생활안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu4_17_1">생활규정</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=sun4_16">민원/수리접수</a></li>
+								
+																			</ul>
+				</div>
+								<div class="menu_box tel">
+					<div class="text">
+						<p>관악학생생활관</p>
+						<p class="tel_num">02-881-9200</p>
+						<p class="desc">Main Phone Number</p>
+					</div>
+				</div>
+			</div>
+			<!-- //전체메뉴 -->
+		
+
+
+<script src='//www.google.com/jsapi' type='text/javascript'></script>
+<script type='text/javascript'>
+google.load('search', '1', {language: 'ko', style: google.loader.themes.V2_DEFAULT});
+google.setOnLoadCallback(function() {
+	var customSearchOptions = {};
+	var orderByOptions = {};
+	orderByOptions['keys'] = [{label: 'Date', key: 'date'}, {label: 'Relevance', key: ''} ];
+	customSearchOptions['enableOrderBy'] = true;
+	customSearchOptions['orderByOptions'] = orderByOptions;
+	var customSearchControl =   new google.search.CustomSearchControl('009257208910244235325:n9_bbkcjs1m', customSearchOptions);
+	customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+	var options = new google.search.DrawOptions();
+	options.setSearchFormRoot('cse-search-form');
+	options.setAutoComplete(true);
+	customSearchControl.draw('cse', options);
+}, true);
+
+</script>
+
+			<div class="section sitemap_sec">
+				<p class="tot_num f_left"> 방문자수 <strong class="today">Today 1,534</strong>
+					<strong class="tot">Total 3,368,688</strong><strong class="from">Since 2013.11.01</strong> </p>
+
+				<div class="service f_right">
+					<h2 class="blind">바로가기서비스</h2>
+					<ul class="go_list">
+					    <li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=private">개인정보처리방침</a></li>
+					    <li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=email">이메일무단수집거부</a></li>
+						<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_7_1">오시는길</a></li>
+					<!--	<li><a href="/dk_main/sitemap.php">사이트맵</a></li> -->
+					</ul>					
+				</div>
+				<div id='cse-search-form' style='position: absolute; left: 31%; top: 5px; width:15%;'></div>
+				<div class="footer_sel">
+					<h2>관련사이트</h2>
+					<div class="selbox">
+						<p>선택해주세요</p>
+						<ul>
+							<li><a href="http://oia.snu.ac.kr/main.html" title="새창" target="b_link">국제협력본부</a></li>
+							<li><a href="http://www.facebook.com/snudsc" title="새창" target="b_link">관악학생생활관자치회</a></li>
+							<li><a href="http://snucounsel.snu.ac.kr/" title="새창" target="b_link">대학생활문화원</a></li>
+							<li><a href="http://health4u.snu.ac.kr/main/main/main.jsp" title="새창" target="b_link">보건진료소</a></li>
+							<li><a href="http://www.snu.ac.kr/" title="새창" target="b_link">서울대학교 홈페이지</a></li>
+							<li><a href="http://helplms.snu.ac.kr/" title="새창" target="b_link">서울대학교 인권센터</a></li>
+							<li><a href="http://wellbeing4u.snu.ac.kr/" title="새창" target="b_link">정신건강센터</a></li>
+							<li><a href="http://library.snu.ac.kr/index.ax" title="새창" target="b_link">중앙도서관</a></li>
+							<li><a href="http://it4u.snu.ac.kr/ist/main/index.jsp" title="새창" target="b_link">정보화본부</a></li>
+							<li><a href="http://my.snu.ac.kr/mysnu/" title="새창" target="b_link">포털마이스누</a></li>
+						</ul>
+					</div>
+				</div>
+
+
+			</div>
+			
+			
+			<div class="section add_box">
+				<p>08826 서울특별시 관악구 관악로 1 서울대학교 관악학생생활관 <span>TEL : 02-881-9200   FAX : 02-877-2892</span></p>
+				<p class="copy">상호 : 서울대학교 관악학생생활관  &nbsp;&nbsp;고유번호증 : 119-82-08689&nbsp;&nbsp;대표자 : 노유선</p>
+				<p class="copy">Copyright ⓒ 2018 SNU Gwanak Residence Halls. All Rights Reserved.</p>
+			</div>
+
+			
+		</div>
+		<!-- //footer -->
+
+	
+
+	</div>
+	<!-- //wrap -->
+
+
+<script language="javascript" src="../js/wrest.js"></script>
+<!-- 팝업창용 코드 -->
+<!-- 새창 대신 사용하는 iframe -->
+<iframe width=0 height=0 name='hiddenframe' style='display:none;' title="hiddenframe"></iframe>
+</body>
+</html>
+
+<script type="text/javascript">
+function search_room_telnum(){
+	var dong = $("#s_tel_dong").val();
+	var room = $("#s_tel_room").val();
+	var sil = "";
+	var url = "./search_pnumber.ajax.php";
+	var para = "&dong="+dong+"&room="+room+"&sil="+sil;
+
+	$.ajax({
+		type:"POST",
+		url:url,
+		data:para,
+		success:function(resp){
+			if(resp=="") ;//alert("찾을 수 없습니다");
+			else $("#room_telnum").attr("value",resp);
+		}
+	});
+}
+
+function goUrl(url){
+	document.location.href = encodeURI(url);
+}
+
+$(function(){
+	var check_login=function(e){			
+		if(''=='') {
+			e.preventDefault();
+			alert("로그인후 이용하실 수 있습니다.");
+			location.href="/sso_login.php";
+		}				
+	}
+	if('snu2_1_1'=='snu2_10_1') $("a[href='#tab_menu03'], a[href='#tab_menu04']").click(check_login);
+//	if('snu2_1_1'=='snu2_11_1') $("a[href='#tab_menu03']").click(check_login);	
+});
+
+</script>
+

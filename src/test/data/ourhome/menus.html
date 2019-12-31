@@ -1,0 +1,962 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<title> 서울대학교 관악학생생활관 </title>
+<link rel="stylesheet" type="text/css" href="/dk_main/css/style_change.css" />	
+<script type="text/javascript" src="/dk_main/js/jquery-1.8.3.min.js" ></script>
+<script type="text/javascript" src="/dk_main/js_new/jquery.fontSizer.js"></script>
+<script type="text/javascript" src="/dk_main/js_new/common.js?2"></script>
+
+<script language="javascript">
+// 자바스크립트에서 사용하는 전역변수 선언
+var dk_path      = "..";
+var dk_bbs       = "dk_bbs";
+var dk_bbs_img   = "img";
+var dk_url       = "http://dorm.snu.ac.kr/dk_board";
+var dk_is_member = "";
+var dk_is_admin  = "";
+var dk_dk_table  = "snu2_food";
+var dk_sca       = "";
+var dk_charset   = "utf-8";
+var dk_cookie_domain = "";
+var dk_is_gecko  = navigator.userAgent.toLowerCase().indexOf("gecko") != -1;
+var dk_is_ie     = navigator.userAgent.toLowerCase().indexOf("msie") != -1;
+</script>
+
+
+<!--
+<body>
+<noscript>
+<p>지원하지 않은 웹브라우저의 경우 자바스크립트가 작동되지 않습니다.</p>
+</noscript>
+<a name="dk_head"></a>-->
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38053678-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+//구글 방문통계용 스크립트
+</script></head>
+
+ <body>
+	<!-- skipnav -->
+	<div id="skipnav">
+		<a href="#nav">Main Manu</a>
+		<a href="#content">contents</a>
+	</div>
+	<!-- //skipnav -->
+	
+	<!-- wrap -->
+	<div id="wrap">
+		
+		<!-- header -->
+		<div id="header">
+			<div class="section">
+				<h1><a href="/dk_main/"><img src="/dk_board/images/layout/h1_logo.png" alt="관악사메인" /></a></h1>
+
+				<!-- top -->
+				<div class="top_menu">
+					<h2 class="blind">회원서비스바로가기</h2>
+					<ul class="f_right">
+					    <!-- 신입생 로그인은 없음 
+						<li><a href="/dk_board/dk_bbs/login_new.php">신입생 로그인</a></li>
+						-->
+						<!-- 비번 찾기 기능 없음
+						<li class="last"><a href="#"  onClick="window.open('https://cupido.snu.ac.kr:58080/SNU_IDM/portals/std/snu/change_pwd_hint.jsp', 'ADpop','resizable=no,status=no,toolbar=no,menubar=no,width=840,height=500,scrollbars=no');return false" -nFocus="blur()" title="새창">ID PW찾기</a></li>
+						-->
+					    
+						<li class="log_btn"><a href="/sso_login.php"><img src="/dk_main/images/btn/btn_top_log.gif" alt="MySNU로그인" /></a></li>
+						<li class="last"><a href="/eng/"><img src="/dk_main/images/btn/btn_top_en.gif" alt="MySNU로그인" /></a></li>
+
+					</ul>
+				 </div>  
+
+				<!-- //top -->
+
+				<!-- nav -->				
+				<h2 class="blind">메인메뉴</h2>
+				<div id="nav" class="nav">
+					<ul>
+						<li v-for="rs,key,idx in menuMap" :class="rs.active?'on':''">
+							<a :href="rs.url">
+								<span >{{ rs.grSubject  }}</span>				
+							</a>
+							<ul :class="'nav_sub nav_sub0'+(idx+1)">
+								<li v-for="rs2,idx2 in rs.children">
+									<a :href="rs2.url" style="color:white">										
+										<span :class="rs2.active?'on':''">{{ rs2.htName  }} </span>
+									</a>
+								</li>
+							</ul>
+						</li>
+					</ul>					
+				</div>
+				<script src="/dk_board/js/menuMap.js"></script>
+				<script src="/dk_board/js/vue.min.js"></script>
+				<script>					
+					var visualHtml="";
+					new Vue({
+						el:"#nav"
+						,data:{menuMap:menuMap,path:[]}
+						,created:function(){
+							var contentUrl='/dk_board/dk_dormitory/dorm_content.php?ht_id=';
+							var uri=location.href.substring(location.origin.length);
+							var path=this.path;
+							function setLink(rs, asc){								
+								if(rs.parent){								
+									if(rs.parent.children[0]==rs){
+										rs.parent.url=rs.url; 
+									}
+									if( uri.indexOf(rs.url)>-1) {
+										rs.active=true;																		
+									}										
+									if(rs.active) {
+										rs.parent.active=rs.active;										
+									}									
+									setLink(rs.parent);																
+								}						
+							}
+							
+							function createLink(rs){
+								if(rs.htLink && rs.htLink.charAt(0)=="/") rs.url=rs.htLink;
+								else rs.url=contentUrl+rs.htId;	
+								setLink(rs,1);
+								if(rs.children){
+									for(var key in rs.children){
+										rs.children[key].parent=rs;
+										createLink(rs.children[key], rs);										
+									}
+								}																	
+							}
+
+							function createPath(rs){
+								if(rs.active)path[path.length]=rs.grSubject?rs.grSubject:rs.htName;
+								if(rs.children){
+									for(var key in rs.children){
+										createPath(rs.children[key], rs);										
+									}
+								}																	
+							}											
+							
+							for(var key in this.menuMap){ 
+								createLink(this.menuMap[key]);
+								createPath(this.menuMap[key]);
+							}
+							console.log(path);																					
+						}												
+					});			
+
+					function setIframeHeight(ifr){
+						setInterval(function(){
+							try{
+								$(ifr).height($(ifr).contents().height());			
+							}catch(e){}
+						},500);							
+					}
+
+					function goURL(url){
+						location.href=url;
+						location.reload();
+					}										
+				</script>
+			</div>
+		</div>
+		<!-- //header -->		<link rel="stylesheet" type="text/css" href="../css/food_page.css" />
+	<!-- container -->
+		<div id="container">
+			<!-- content -->
+			<div class="content subcon">
+				<!-- navbar -->
+				<div class="navbar_all">
+					<!--
+					<ul class="navbar">
+						<li class="nav_arrow"><a href="../index.html"><img src="/dk_main/images/sub/img/img_nav_home.gif" class="vam" alt="홈" /></a></li>
+						<li class="nav_arrow"><a href="#">시설안내</a></li>
+						<li class="now">시설수납조회</li>
+					</ul>
+					-->
+					<!-- 폰트사이즈조절 
+					<div id="control-wrap">
+						<h3><img src="../images/btn/font_sizere.gif" alt="폰트크기조절" /></h3>
+						<ul id="controls">
+							<li><a id="fs-minus" class="font_zoom" href="#" title="Smaller Text"></a></li>
+							<li><a id="fs-plus" class="font_zoom" href="#" title="Larger Text"></a></li>
+						</ul>
+					</div>
+					<!-- //폰트사이즈조절 -->
+				</div>
+				<!-- //navbar -->
+
+				<!-- sub title area 
+				<div class="title_area">
+					<h2><img src="../images/sub/tit/title_sub02_08.gif" alt="시설수납조회 Storage" /></h2>
+					<p class="mt50"><img src="../images/sub/img/img_sub02.gif" alt="세계화 시대에 부응하는 교육의 장! 세계 80여개국에서 온 다양한 국적의 학생들이 함께 생활하고 있는 다문화적 거주환경은 그 자체로 세계화 시대에 부응하는 훌룽한 교육의 장이 되어줄 것입니다." /></p>
+				</div>
+				<!-- sub title area -->
+
+				<!-- sub_cont -->
+				<div class="sub_cont sub02">
+
+
+				<!-- 내용시작-->
+					<div class="menu">
+						<div class="go">
+							<a href="./food.php?start_date2=1576940400" class="left"><span>이전주</span></a>
+							<a href="./food.php?start_date2=1578150000" class="right"><span>다음주</span></a>
+						</div>
+						<h3><strong>12월29일 ~ 1월04일</strong> 식단표</h3>
+						<ul class="board">
+							<li class="menu_a"><span>2000원</span></li>
+							<li class="menu_b"><span>2500원</span></li>
+							<li class="menu_c"><span>3000원</span></li>
+							<li class="menu_d"><span>3500원</span></li>
+							<li class="menu_e"><span>4000원</span></li>
+							<li class="menu_f"><span>5000원</span></li>
+						</ul>
+						
+
+					</div>
+
+
+					<table class="t_col" summary="한주의 식단표를 제공합니다.">
+						<caption>식단표</caption>
+						<colgroup>
+						<col width="62px;" />
+						<col width="48px;"/>
+						<col width="56px;"/>
+						<col width="136px;"/>
+						<col width="136px;;"/>
+						<col width="136px;"/>
+						<col width="136px;"/>
+						<col width="136px;"/>
+						<col width="136px;"/>
+						<col width="136px;"/>
+						<col width="136px;"/>
+						</colgroup>
+						<thead>
+							<tr>
+								<th scope="colgroup" colspan="3">구분</th>
+								<th  scope="col" class="fc_red"><strong >일</strong>(12/29)</th>
+								<th  scope="col"><strong>월</strong>(12/30)</th>
+								<th  scope="col"><strong>화</strong>(12/31)</th>
+								<th  scope="col"><strong>수</strong>(1/01)</th>
+								<th  scope="col"><strong>목</strong>(1/02)</th>
+								<th  scope="col"><strong>금</strong>(1/03)</th>
+								<th  scope="col"><strong>토</strong>(1/04)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td scope="rowgroup"rowspan="9" class="bg fc_blue f14">아워홈</td>
+								<td class="bg" rowspan="2" scope="row"><strong>아침</strong></td>
+								<td class="bg">가마</td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>사골우거지국</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>콩비지찌개</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>순두부찌개</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>나물비빔밥</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>얼큰수제비국&해물완자고추장조림</span></li>
+																		</ul>
+								</td>
+																<td class="last">
+									<ul>
+																			<li class="menu_c"><span>콩나물해장국&계란후라이</span></li>
+																		</ul>
+								</td>
+															</tr>
+							<tr>
+								<td class="bg">인터쉐프</td>
+																<td class="">
+									<ul>
+																			<li class="menu_b"><span>토스트,씨리얼</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_b"><span>토스트씨리얼우유</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_b"><span>토스트씨리얼우유</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_b"><span>토스트씨리얼우유</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_b"><span>토스트씨리얼우유</span></li>
+																		</ul>
+								</td>
+																<td class="last">
+									<ul>
+																			<li class="menu_b"><span>토스트씨리얼우유</span></li>
+																		</ul>
+								</td>
+															</tr>
+							<tr>
+								<td class="bg" rowspan="3" scope="row"><strong>점심</strong></td>
+								<td class="bg">가마</td>		
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>얼큰감자수제비&햄전</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>제주돼지김치짜글이&라면사리</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>잔치국수&김밥</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>새해에는떡만두국&모듬전</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>뚝배기버섯불고기&당면사리</span></li>
+																		</ul>
+								</td>
+																<td class="last">
+									<ul>
+																			<li class="menu_e"><span>닭곰탕&소면사리/미트볼케찹조림</span></li>
+																		</ul>
+								</td>
+															</tr>
+							<tr>
+								<td class="bg">인터쉐프</td>
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>제육장조림버터비빔밥&해시브라운</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>통베이컨볶음밥&계란후라이</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>카레돈까스</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class=""><span>★HAPPY NEW YEAR★</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>치즈오븐스파게티</span></li>
+																		</ul>
+								</td>
+																<td class="last">
+									<ul>
+																			<li class="menu_e"><span>마파두부덮밥</span></li>
+																		</ul>
+								</td>
+															</tr>
+							<tr>
+								<td class="bg">해피존</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="last">
+									<ul>
+																		</ul>
+								</td>
+															</tr>
+							<!--
+							<tr>
+								<td class="bg">후식</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="last">
+									<ul>
+																		</ul>
+								</td>
+															</tr>
+							-->
+							<tr>
+								<td class="bg" rowspan="3" scope="row"><strong>저녁</strong></td>
+								<td class="bg">가마</td>
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>뚝배기제육불고기</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>돌솥치즈닭갈비덮밥</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>에그함박스테이크</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>참치김치찌개</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_e"><span>돌솥제육비빔밥</span></li>
+																		</ul>
+								</td>
+																<td class="last">
+									<ul>
+																			<li class="menu_e"><span>제육두부찌개&생선까스</span></li>
+																		</ul>
+								</td>
+															</tr>
+							<tr>
+								<td class="bg">인터쉐프</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="last">
+									<ul>
+																		</ul>
+								</td>
+															</tr>
+							<tr>
+								<td class="bg">해피존</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="last">
+									<ul>
+																		</ul>
+								</td>
+															</tr>
+							<!--
+							<tr>
+								<td class="bg">후식</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																		</ul>
+								</td>
+																<td class="last">
+									<ul>
+																		</ul>
+								</td>
+															</tr>
+							-->
+							<tr>
+								<td class="bg fc_blue h48" colspan="2" scope="row"><strong>비고</strong></td>
+								<td colspan="7" class="fc_blue last"></td>
+							</tr>
+							
+							<tr>
+								<td class="bg f14" scope="rowgroup" rowspan="4">919동</td>
+								<td  class="bg" colspan="2" scope="row"><strong>아침</strong></td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>쇠고기브로콜리볶음</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>무쇠고기국&생선까스</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>단호박밥&불고기</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_b"><span>두부명란찌개</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_b"><span>토스트씨리얼우유</span></li>
+																			<li class="menu_c"><span>제육김치두루치기</span></li>
+																			<li class="menu_c"><span>어묵김치국</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_b"><span>어묵탕</span></li>
+																		</ul>
+								</td>
+																<td class="last">
+									<ul>
+																			<li class="menu_c"><span>해물된장찌개</span></li>
+																		</ul>
+								</td>
+															</tr>
+							<tr>
+								<td class="bg"colspan="2" scope="row"><strong>점심</strong></td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>설렁탕</span></li>
+																			<li class="menu_e"><span>핫커리치킨까스</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_b"><span>콩나물국밥</span></li>
+																			<li class="menu_e"><span>제육쭈꾸미볶음</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>돌솥갈비탕</span></li>
+																			<li class="menu_d"><span>고등어김치조림</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>사골떡만두국</span></li>
+																			<li class="menu_e"><span>갈비구이</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>돌솥순두부계란동동</span></li>
+																			<li class="menu_e"><span>치즈돈까스&쫄면</span></li>
+																			<li class="menu_e"><span>닭개장&당면사리</span></li>
+																			<li class="menu_f"><span>나가사키짬뽕&미니날치알밥</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>돌솥감자탕</span></li>
+																			<li class="menu_d"><span>불닭마요덮밥</span></li>
+																		</ul>
+								</td>
+																<td class="last">
+									<ul>
+																			<li class="menu_c"><span>쇠고기버섯전골</span></li>
+																			<li class="menu_e"><span>안동식짐닭&당면사리</span></li>
+																		</ul>
+								</td>
+															</tr>
+							<tr>
+								<td class="bg"colspan="2" scope="row"><strong>저녁</strong></td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>두부와쇠고기볶음</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_d"><span>모듬버섯불고기</span></li>
+																			<li class="menu_e"><span>새우튀김돈까스벤또</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class=""><span>(5500원)아보카도명란마요덮밥&육즙함박</span></li>
+																			<li class="menu_d"><span>순살양념치킨</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_c"><span>해물잡채덮밥</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class="menu_d"><span>훈제오리볶음밥</span></li>
+																			<li class="menu_e"><span>밀푀유나베</span></li>
+																			<li class="menu_e"><span>지코바치킨덮밥&누룽지샐러드</span></li>
+																		</ul>
+								</td>
+																<td class="">
+									<ul>
+																			<li class=""><span>(5500원)레몬크림새우&짜장면</span></li>
+																			<li class="menu_c"><span>오삼불고기</span></li>
+																		</ul>
+								</td>
+																<td class="last">
+									<ul>
+																			<li class="menu_d"><span>마라우육덮밥</span></li>
+																		</ul>
+								</td>
+															</tr>
+							<tr>
+								<td class="bg" colspan="2" scope="row"><strong>비고</strong></td>
+								<td colspan="7" class="last"></td>
+							</tr>
+
+						</tbody>
+					</table>
+
+
+
+
+					
+					<!-- 내용 끝-->
+
+				</div>
+				<!-- //sub_cont -->
+			</div>
+			<!-- //content -->
+		</div>
+		<!-- //container -->
+
+
+<!-- 컨텐츠 끝 -->
+			<!-- footer -->
+		<div id="footer">
+		<!-- 전체메뉴 -->
+			<div class="section full_menu">
+									<div class="menu_box">
+					<h3>관악학생생활관 소개</h3>
+					<ul>
+								<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_4">인사말</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_1_2">역대관장 및 연혁</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_2">현황</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_6_1">구성원소개</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_9">주요시설 연락처</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_7_1">오시는 길</a></li>
+								
+																			</ul>
+				</div>
+								<div class="menu_box">
+					<h3>시설안내</h3>
+					<ul>
+								<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu2_4">행정시설</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu2_10_1">체력단련센터</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu2_11_1">상담센터(관심)</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu2_1_1">편의시설</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu2_5_0">시설이용안내</a></li>
+								
+															<li><a href="/dk_board/facility/facility_reg.php">시설이용신청</a></li>
+								
+															<li><a href="/dk_board/facility/facility_reg_state.php">시설수납조회</a></li>
+								
+																			</ul>
+				</div>
+								<div class="menu_box">
+					<h3>커뮤니티</h3>
+					<ul>
+								<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=notice">공지사항</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=board">게시판</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=schedule_year">연간일정</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu8_3_1">문화생활</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu8_4_1">입주자자치회</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu8_5_1">동아리</a></li>
+								
+																			</ul>
+				</div>
+								<div class="menu_box">
+					<h3>학생생활관</h3>
+					<ul>
+								<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu3_5_1">학부생활관</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu3_6_1">대학원생활관</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu3_1_1">입주안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu3_2_1">퇴거안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu3_4_1">생활안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu3_3_2">생활규정</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=repair1">민원/수리접수</a></li>
+								
+																			</ul>
+				</div>
+								<div class="menu_box">
+					<h3>가족생활관</h3>
+					<ul>
+								<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu5_2_1">가족생활관 소개</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu5_3_1">입주안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu5_4">퇴거안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu5_5">생활안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu5_6_1">생활규정</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu5_1">민원/수리접수</a></li>
+								
+																			</ul>
+				</div>
+								<div class="menu_box">
+					<h3>BK생활관</h3>
+					<ul>
+								<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu4_12_1">BK생활관 소개</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu4_13_1">입주안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu4_15_1">퇴거안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=sun4_14">생활안내</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu4_17_1">생활규정</a></li>
+								
+															<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=sun4_16">민원/수리접수</a></li>
+								
+																			</ul>
+				</div>
+								<div class="menu_box tel">
+					<div class="text">
+						<p>관악학생생활관</p>
+						<p class="tel_num">02-881-9200</p>
+						<p class="desc">Main Phone Number</p>
+					</div>
+				</div>
+			</div>
+			<!-- //전체메뉴 -->
+		
+
+
+<script src='//www.google.com/jsapi' type='text/javascript'></script>
+<script type='text/javascript'>
+google.load('search', '1', {language: 'ko', style: google.loader.themes.V2_DEFAULT});
+google.setOnLoadCallback(function() {
+	var customSearchOptions = {};
+	var orderByOptions = {};
+	orderByOptions['keys'] = [{label: 'Date', key: 'date'}, {label: 'Relevance', key: ''} ];
+	customSearchOptions['enableOrderBy'] = true;
+	customSearchOptions['orderByOptions'] = orderByOptions;
+	var customSearchControl =   new google.search.CustomSearchControl('009257208910244235325:n9_bbkcjs1m', customSearchOptions);
+	customSearchControl.setResultSetSize(google.search.Search.FILTERED_CSE_RESULTSET);
+	var options = new google.search.DrawOptions();
+	options.setSearchFormRoot('cse-search-form');
+	options.setAutoComplete(true);
+	customSearchControl.draw('cse', options);
+}, true);
+
+</script>
+
+			<div class="section sitemap_sec">
+				<p class="tot_num f_left"> 방문자수 <strong class="today">Today 1,534</strong>
+					<strong class="tot">Total 3,368,688</strong><strong class="from">Since 2013.11.01</strong> </p>
+
+				<div class="service f_right">
+					<h2 class="blind">바로가기서비스</h2>
+					<ul class="go_list">
+					    <li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=private">개인정보처리방침</a></li>
+					    <li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=email">이메일무단수집거부</a></li>
+						<li><a href="/dk_board/dk_dormitory/dorm_content.php?ht_id=snu1_7_1">오시는길</a></li>
+					<!--	<li><a href="/dk_main/sitemap.php">사이트맵</a></li> -->
+					</ul>					
+				</div>
+				<div id='cse-search-form' style='position: absolute; left: 31%; top: 5px; width:15%;'></div>
+				<div class="footer_sel">
+					<h2>관련사이트</h2>
+					<div class="selbox">
+						<p>선택해주세요</p>
+						<ul>
+							<li><a href="http://oia.snu.ac.kr/main.html" title="새창" target="b_link">국제협력본부</a></li>
+							<li><a href="http://www.facebook.com/snudsc" title="새창" target="b_link">관악학생생활관자치회</a></li>
+							<li><a href="http://snucounsel.snu.ac.kr/" title="새창" target="b_link">대학생활문화원</a></li>
+							<li><a href="http://health4u.snu.ac.kr/main/main/main.jsp" title="새창" target="b_link">보건진료소</a></li>
+							<li><a href="http://www.snu.ac.kr/" title="새창" target="b_link">서울대학교 홈페이지</a></li>
+							<li><a href="http://helplms.snu.ac.kr/" title="새창" target="b_link">서울대학교 인권센터</a></li>
+							<li><a href="http://wellbeing4u.snu.ac.kr/" title="새창" target="b_link">정신건강센터</a></li>
+							<li><a href="http://library.snu.ac.kr/index.ax" title="새창" target="b_link">중앙도서관</a></li>
+							<li><a href="http://it4u.snu.ac.kr/ist/main/index.jsp" title="새창" target="b_link">정보화본부</a></li>
+							<li><a href="http://my.snu.ac.kr/mysnu/" title="새창" target="b_link">포털마이스누</a></li>
+						</ul>
+					</div>
+				</div>
+
+
+			</div>
+			
+			
+			<div class="section add_box">
+				<p>08826 서울특별시 관악구 관악로 1 서울대학교 관악학생생활관 <span>TEL : 02-881-9200   FAX : 02-877-2892</span></p>
+				<p class="copy">상호 : 서울대학교 관악학생생활관  &nbsp;&nbsp;고유번호증 : 119-82-08689&nbsp;&nbsp;대표자 : 노유선</p>
+				<p class="copy">Copyright ⓒ 2018 SNU Gwanak Residence Halls. All Rights Reserved.</p>
+			</div>
+
+			
+		</div>
+		<!-- //footer -->
+
+	
+
+	</div>
+	<!-- //wrap -->
+
+<script language="javascript" src="../js/wrest.js"></script>
+<!-- 팝업창용 코드 -->
+<!-- 새창 대신 사용하는 iframe -->
+<iframe width=0 height=0 name='hiddenframe' style='display:none;' title="hiddenframe"></iframe>
+</body>
+</html>

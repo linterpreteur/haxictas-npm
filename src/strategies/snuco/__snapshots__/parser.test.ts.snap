@@ -1,0 +1,821 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`cafeterias parses given page 1`] = `
+Object {
+  "220동식당 (875-0240)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "14:00",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "지하 1층",
+          "opens_at": "11:00",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "19:00",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "지하 1층",
+          "opens_at": "17:00",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "휴관",
+          "day": Array [
+            "saturday",
+            "holidays",
+          ],
+          "floor": "지하 1층",
+          "opens_at": "휴관",
+        },
+      },
+    ],
+    "location": "3단계대학원연구동 (220동)",
+  },
+  "301동식당 (889-8955)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "13:30",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "1층",
+          "opens_at": "11:30",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "휴관",
+          "day": Array [
+            "saturday",
+            "holidays",
+          ],
+          "floor": "1층",
+          "opens_at": "휴관",
+        },
+      },
+    ],
+    "location": "301동",
+  },
+  "302동식당 (880-1939)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "14:00",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "1층",
+          "opens_at": "11:15",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "19:00",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "1층",
+          "opens_at": "17:00",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "휴관",
+          "day": Array [
+            "saturday",
+            "holidays",
+          ],
+          "floor": "1층",
+          "opens_at": "휴관",
+        },
+      },
+    ],
+    "location": "302동",
+  },
+  "3식당 (880-5545)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "13:30",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "4층",
+          "opens_at": "11:30",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "19:00",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "4층",
+          "opens_at": "17:00",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "휴관",
+          "day": Array [
+            "saturday",
+            "holidays",
+          ],
+          "floor": "4층",
+          "opens_at": "휴관",
+        },
+      },
+    ],
+    "location": "전망대 (75-1동)",
+  },
+  "cafeteria": undefined,
+  "hours": undefined,
+  "location": undefined,
+  "감골식당 (880-5544)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "13:30",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "채식",
+          "opens_at": "11:30",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "휴관",
+          "day": Array [
+            "saturday",
+            "holidays",
+          ],
+          "floor": "채식",
+          "opens_at": "휴관",
+        },
+      },
+    ],
+    "location": "아시아연구소 (101동)",
+  },
+  "공대간이식당 (889-8956)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "19:00",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "1층",
+          "opens_at": "11:00",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "휴관",
+          "day": Array [
+            "saturday",
+            "holidays",
+          ],
+          "floor": "1층",
+          "opens_at": "휴관",
+        },
+      },
+    ],
+    "location": "30-2동",
+  },
+  "기숙사식당 (881-9072)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "09:30",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "1층",
+          "opens_at": "07:30",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "13:30",
+          "day": Array [
+            "weekdays",
+            "saturday",
+            "holidays",
+          ],
+          "floor": "1층",
+          "opens_at": "11:30",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "19:30",
+          "day": Array [
+            "weekdays",
+            "saturday",
+            "holidays",
+          ],
+          "floor": "1층",
+          "opens_at": "17:30",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "09:30",
+          "day": Array [
+            "saturday",
+            "holidays",
+          ],
+          "floor": "1층",
+          "opens_at": "08:00",
+        },
+      },
+    ],
+    "location": "관악생활관 (919동)",
+  },
+  "동원관식당 (880-8697)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "14:00",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "2층",
+          "opens_at": "11:00",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "휴관",
+          "day": Array [
+            "saturday",
+            "holidays",
+          ],
+          "floor": "2층",
+          "opens_at": "휴관",
+        },
+      },
+    ],
+    "location": "113동",
+  },
+  "두레미담2호점 (4식당) (889-6946)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "19:00",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "2층",
+          "opens_at": "11:30",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "휴관",
+          "day": Array [
+            "saturday",
+            "holidays",
+          ],
+          "floor": "2층",
+          "opens_at": "휴관",
+        },
+      },
+    ],
+    "location": "76동",
+  },
+  "라운지오 (882-7005)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "21:00",
+          "day": Array [
+            "weekdays",
+            "saturday",
+            "holidays",
+          ],
+          "floor": "1층",
+          "opens_at": "11:00",
+        },
+      },
+    ],
+    "location": "동원생활관 (113동)",
+  },
+  "샤반 (871-6933)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "14:30",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "1층",
+          "opens_at": "11:00",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "20:00",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "1층",
+          "opens_at": "16:30",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "14:00",
+          "day": Array [
+            "saturday",
+          ],
+          "floor": "1층",
+          "opens_at": "11:30",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "휴관",
+          "day": Array [
+            "holidays",
+          ],
+          "floor": "1층",
+          "opens_at": "휴관",
+        },
+      },
+    ],
+    "location": "501동",
+  },
+  "소담마루 (880-8698)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "15:00",
+          "day": Array [
+            "weekdays",
+            "saturday",
+          ],
+          "floor": "3층",
+          "opens_at": "11:00",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "19:40",
+          "day": Array [
+            "weekdays",
+            "saturday",
+          ],
+          "floor": "3층",
+          "opens_at": "17:00",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "휴관",
+          "day": Array [
+            "holidays",
+          ],
+          "floor": "3층",
+          "opens_at": "휴관",
+        },
+      },
+    ],
+    "location": "동원생활관 (113동)",
+  },
+  "예술계식당 (876-1006)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "14:00",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "1층",
+          "opens_at": "11:30",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "19:00",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "1층",
+          "opens_at": "17:00",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "휴관",
+          "day": Array [
+            "saturday",
+            "holidays",
+          ],
+          "floor": "1층",
+          "opens_at": "휴관",
+        },
+      },
+    ],
+    "location": "74동",
+  },
+  "자하연식당 (880-7888)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "19:00",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "3층",
+          "opens_at": "11:30",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "휴관",
+          "day": Array [
+            "saturday",
+            "holidays",
+          ],
+          "floor": "3층",
+          "opens_at": "휴관",
+        },
+      },
+    ],
+    "location": "농협 (109동)",
+  },
+  "학생회관식당 (880-5543)": Object {
+    "hours": Array [
+      Object {
+        "conditions": Object {
+          "closes_at": "11:00-13:30 (분식 14:00-18:00)",
+          "day": Array [
+            "weekdays",
+          ],
+          "floor": "지하",
+          "opens_at": "11:00-13:30 (분식 14:00-18:00)",
+        },
+      },
+      Object {
+        "conditions": Object {
+          "closes_at": "휴관",
+          "day": Array [
+            "saturday",
+            "holidays",
+          ],
+          "floor": "지하",
+          "opens_at": "휴관",
+        },
+      },
+    ],
+    "location": "학생회관 (63동)",
+  },
+}
+`;
+
+exports[`menus parses given page 1`] = `
+Object {
+  "cafeteria": "학생회관식당(880-5543)",
+  "meals": Array [
+    Object {
+      "제육숙주볶음": "1,700원",
+    },
+    Object {
+      "동파육": "4,000원",
+      "쟁반자장&군만두": "3,500원",
+      "철판바베큐립&볶음밥": "5,500원",
+      "청국장찌개": "1,700원",
+    },
+    Object {
+      "꽁치무조림(#)": "1,700원",
+      "돈까스커리": "4,000원",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 2`] = `
+Object {
+  "cafeteria": "자하연식당(880-7888)",
+  "meals": Array [
+    Object {},
+    Object {
+      "만두육개장": "4,000원",
+      "매운갈비찜": "4,000원",
+    },
+    Object {
+      "모듬버섯불고기": "3,500원",
+      "알참치덮밥#": "3,000원",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 3`] = `
+Object {
+  "cafeteria": "예술계식당(876-1006)",
+  "meals": Array [
+    Object {},
+    Object {
+      "나물비빔밥&달걀후라이&너비아니구이": "5,000원",
+      "라면정식": "3,000원",
+      "언양식불고기오므라이스&쫄면야채무침&허니버터감자튀김": "5,000원",
+    },
+    Object {
+      "즉석라면&등심돈가스&떡볶이&김말이&만두튀김": "4,500원",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 4`] = `
+Object {
+  "cafeteria": "소담마루(880-8698)",
+  "meals": Array [
+    Object {},
+    Object {
+      "한일식 Serving 메뉴": "기타",
+    },
+    Object {
+      "한일식 Serving 메뉴": "기타",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 5`] = `
+Object {
+  "cafeteria": "샤반(871-6933)",
+  "meals": Array [
+    Object {},
+    Object {
+      "한식 Serving 메뉴": "기타",
+    },
+    Object {
+      "한식 Serving 메뉴": "기타",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 6`] = `
+Object {
+  "cafeteria": "라운지오(882-7005)",
+  "meals": Array [
+    Object {},
+    Object {
+      "피자, 스파게티류": "기타",
+    },
+    Object {
+      "피자, 스파게티류": "기타",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 7`] = `
+Object {
+  "cafeteria": "두레미담(880-9358)",
+  "meals": Array [
+    Object {},
+    Object {
+      "7선산채비빔밥": "13,000원",
+      "<셀프(뷔페)코너>": "6,000원",
+      "<주문식 코너>": "기타",
+      "고등어구이정식": "11,000원",
+      "고등어무조림정식": "12,000원",
+      "낙지순두부": "10,000원",
+      "능이버섯삼계탕": "16,000원",
+      "들깨칼국수&왕만두": "10,000원",
+      "멍게비빔밥": "12,000원",
+      "묵은지김치찌개": "8,000원",
+      "미담삼계탕": "13,000원",
+      "버섯콩나물국, 두부된장찌개, 돈육메추리알장조림, 치킨너겟, 비빔막국수, 깻잎장아찌, 그린샐러드, 깍두기, 오늘의차": "기타",
+      "삼겹보쌈정식": "12,000원",
+      "장어한마리덮밥정식": "15,000원",
+      "전복삼계탕": "19,500원",
+      "전복한우등심샤브샤브": "25,000원",
+      "전복해물된장찌개": "12,000원",
+      "차돌된장찌개": "8,000원",
+      "철판제육볶음정식": "12,000원",
+      "철판주꾸미볶음정식": "12,000원",
+      "초계국수&왕만두": "10,000원",
+      "한우등심샤브샤브": "19,000원",
+      "한우불고기정식": "17,000원",
+      "해물파전": "15,000원",
+      "황태구이정식": "12,000원",
+    },
+    Object {
+      "7선산채비빔밥": "13,000원",
+      "<셀프(뷔페)코너>": "6,000원",
+      "<주문식 코너>": "기타",
+      "고등어구이정식": "11,000원",
+      "고등어무조림정식": "12,000원",
+      "낙지순두부": "10,000원",
+      "능이버섯삼계탕": "16,000원",
+      "들깨칼국수&왕만두": "10,000원",
+      "멍게비빔밥": "12,000원",
+      "묵은지김치찌개": "8,000원",
+      "미담삼계탕": "13,000원",
+      "삼겹보쌈정식": "12,000원",
+      "잡곡밥, 두부된장찌개, 묵은지닭볶음탕, 양파링튀김, 부추잡채, 얼갈이겉절이, 그린샐러드, 깍두기, 오늘의차": "기타",
+      "장어한마리덮밥정식": "15,000원",
+      "전복삼계탕": "19,500원",
+      "전복한우등심샤브샤브": "25,000원",
+      "전복해물된장찌개": "12,000원",
+      "차돌된장찌개": "8,000원",
+      "철판제육볶음정식": "12,000원",
+      "철판주꾸미볶음정식": "12,000원",
+      "초계국수&왕만두": "10,000원",
+      "한우등심샤브샤브": "19,000원",
+      "한우불고기정식": "17,000원",
+      "해물파전": "15,000원",
+      "황태구이정식": "12,000원",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 8`] = `
+Object {
+  "cafeteria": "동원관식당(880-8697)",
+  "meals": Array [
+    Object {},
+    Object {
+      "목살슬라이스덮밥&미니우동&새우튀김": "5,500원",
+      "인삼곰탕": "3,000원",
+    },
+    Object {
+      "순살양념치킨": "3,500원",
+      "콩나물국밥": "2,500원",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 9`] = `
+Object {
+  "cafeteria": "기숙사식당(881-9072)",
+  "meals": Array [
+    Object {
+      "닭가슴살불고기": "3,000원",
+      "토스트&계란후라이&우유(#)": "2,000원",
+    },
+    Object {
+      "베이컨김치덮밥&계란후라이": "3,000원",
+      "쇠고기쌀국수": "3,000원",
+    },
+    Object {
+      "두부와쇠고기볶음": "3,000원",
+      "새우튀김돈까스벤또": "4,000원",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 10`] = `
+Object {
+  "cafeteria": "공대간이식당(889-8956)",
+  "meals": Array [
+    Object {},
+    Object {
+      "유린 만두 2,000원고기 소보로 볶음밥 3,500원공간 짜장면 3,500원사천 짜장면 3,500원공간 짬뽕 / 밥 3,500원짜장면 / 짬뽕 곱빼기 4,000원공간 짬짜면 4,500원순두부 만두 짬뽕 4,800원돈까스 비빔면 5,200원부대짬뽕 5,200원짬짜탕면 6,500원치킨탕수육": "7,000원",
+    },
+    Object {
+      "유린 만두 2,000원고기 소보로 볶음밥 3,500원공간 짜장면 3,500원사천 짜장면 3,500원공간 짬뽕 / 밥 3,500원짜장면 / 짬뽕 곱빼기 4,000원공간 짬짜면 4,500원순두부 만두 짬뽕 4,800원돈까스 비빔면 5,200원부대짬뽕 5,200원짬짜탕면 6,500원치킨탕수육": "7,000원",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 11`] = `
+Object {
+  "cafeteria": "감골식당(880-5544)",
+  "meals": Array [
+    Object {},
+    Object {
+      "(채식) 콩고기채소볶음, 브로콜리두부강정, 쫄면채소무침, 칙피샐러드, 파래부추무침, 매운콩나물국, 연두부야채죽, 백김치, DIY샐러드, 과일, 음료": "6,500원",
+      "(할랄) 치킨굴라쉬+오징어가스": "5,000원",
+      "순대국밥+고기산적조림": "3,000원",
+      "치킨텐더오므라이스": "4,000원",
+    },
+    Object {
+      "돈가스+미니우동": "4,000원",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 12`] = `
+Object {
+  "cafeteria": "4식당(889-6946)",
+  "meals": Array [
+    Object {},
+    Object {
+      "가라아게카레라이스": "4,500원",
+      "왕돈등심돈까스&미니크로와상": "4,000원",
+    },
+    Object {
+      "불고기야채비빔밥": "4,500원",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 13`] = `
+Object {
+  "cafeteria": "3식당(880-5545)",
+  "meals": Array [
+    Object {},
+    Object {
+      "닭볶음탕": "4,000원",
+      "오므라이스&육즙함박": "4,000원",
+      "육개장칼국수": "3,000원",
+      "치킨커틀렛": "3,000원",
+      "해물된장찌개(#)": "3,000원",
+    },
+    Object {
+      "쇠고기미역국백반": "2,500원",
+      "칠리깐풍육": "3,500원",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 14`] = `
+Object {
+  "cafeteria": "302동식당(880-1939)",
+  "meals": Array [
+    Object {},
+    Object {
+      "꽃게된장찌개(#)": "3,000원",
+      "모듬버섯불고기": "3,500원",
+    },
+    Object {
+      "순살깐풍기": "3,500원",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 15`] = `
+Object {
+  "cafeteria": "301동식당(889-8955)",
+  "meals": Array [
+    Object {},
+    Object {
+      "<301푸드코트>": "기타",
+      "<교직원식당>": "기타",
+      "[특식] 두부수육보쌈,시래기된장국": "기타",
+      "갈릭철판돈가스": "4,800원",
+      "날치알밥&새우튀김": "4,500원",
+      "등심돈가스": "4,000원",
+      "마파두부덮밥": "3,500원",
+      "명란우삼겹덮밥": "4,300원",
+      "봄": "6,000원",
+      "상추쌈&쌈장,느타리버섯마늘종볶음,콩나물파생채,배추겉절이,식혜": "기타",
+      "설렁탕": "4,800원",
+      "유니짜장면": "3,500원",
+      "치즈제육덮밥": "4,500원",
+      "해물백짬뽕": "5,500원",
+    },
+    Object {
+      "<301푸드코트>": "기타",
+      "날치알밥&새우튀김": "4,500원",
+      "등심돈가스": "4,000원",
+      "마파두부덮밥": "3,500원",
+      "명란우삼겹덮밥": "4,300원",
+      "부대찌개전골": "11,000원",
+      "설렁탕": "4,800원",
+      "유니짜장면": "3,500원",
+      "해물백짬뽕": "5,500원",
+    },
+  ],
+}
+`;
+
+exports[`menus parses given page 16`] = `
+Object {
+  "cafeteria": "220동식당(875-0240)",
+  "meals": Array [
+    Object {},
+    Object {
+      "[뚝]파채불고기": "4500원",
+      "김치볶음밥*후라이&미니잔치국수": "4000원",
+    },
+    Object {
+      "치킨마요덮밥&야채고로케": "4500원",
+    },
+  ],
+}
+`;
