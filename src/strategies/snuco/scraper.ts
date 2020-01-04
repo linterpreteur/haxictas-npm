@@ -1,17 +1,15 @@
 import axios from 'axios';
-import {MenuCallback, CafeteriaCallback} from '../../scraper';
+import {Scraper} from '../../scraper';
 
-export async function menus(date: Date, callback: MenuCallback) {
+export const menus: Scraper['menus'] = async function (date) {
     const dateString = `${date.getMonth() + 1}/${date.getDate()}/${date.getFullYear()}`;
     const url = `http://snuco.snu.ac.kr/ko/foodmenu?field_menu_date_value[value][date]=${dateString}`;
     return axios.get(url)
-        .then(x => callback({data: x.data, date: date}))
-        .catch(err => callback(null, err));
+        .then(x => ({data: x.data as string, date}))
 };
 
-export async function cafeterias(callback: CafeteriaCallback) {
+export const cafeterias: Scraper['cafeterias'] = async function() {
     const url = 'http://snuco.snu.ac.kr/ko/node/20';
     return axios.get(url)
-        .then(x => callback(x.data))
-        .catch(err => callback(null, err));
+        .then(x => x.data as string)
 };

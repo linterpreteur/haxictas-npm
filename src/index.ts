@@ -7,8 +7,8 @@ declare function require(id: string): any;
 
 type Haxictas = {
     [id: string]: {
-        menus: (date: Date, callback: (x?: MenuData, err?: {}) => void) => void,
-        cafeterias: (callback: (x?: CafeteriaData, err?: {}) => void) => void
+        menus: (date: Date) => AsyncGenerator<MenuData, void, undefined>,
+        cafeterias: () => AsyncGenerator<CafeteriaData, void, undefined>
     }
 };
 
@@ -22,21 +22,19 @@ function load(rootDirectory: string) {
         const parser: Parser = require(`${rootPath}/${cafeteria}/parser`);
         const scraper: Scraper = require(`${rootPath}/${cafeteria}/scraper`);
         data[cafeteria] = {
-            menus: (scraper.menus && parser.menus) && function(date, callback) {
-                scraper.menus(date, function (responseBody, err) {
-                    if (err) {
-                        return callback(null, err);
-                    }
-                    parser.menus(responseBody, callback);
-                });
+            menus: (scraper.menus && parser.menus) && async function* (date) {
+                const iter = await scraper.menus(date)
+                    .then(res => parser.menus(res));
+                for await (const val of iter) {
+                    yield val;
+                }
             },
-            cafeterias: (scraper.cafeterias && parser.cafeterias) && function(callback) {
-                scraper.cafeterias((responseBody, err) => {
-                    if (err) {
-                        return callback(null, err);
-                    }
-                    parser.cafeterias(responseBody, callback);
-                });
+            cafeterias: (scraper.cafeterias && parser.cafeterias) && async function* () {
+                const iter = await scraper.cafeterias()
+                    .then(res => parser.cafeterias(res));
+                for await (const val of iter) {
+                    yield val;
+                }
             }
         };
     });

@@ -1,8 +1,8 @@
 import {JSDOM} from 'jsdom';
-import {MenuParams, MenuCallback} from '../../parser';
+import {Parser} from '../../parser';
 import {dedupe, querySelectorArray, normalize} from '../../lib/utils';
 
-export function menus({data, date}: MenuParams, callback: MenuCallback) {
+export const menus: Parser['menus'] = function* menus({data, date}) {
     const {document} = (new JSDOM(data)).window;
 
     const cafeterias = dedupe(
@@ -59,15 +59,15 @@ export function menus({data, date}: MenuParams, callback: MenuCallback) {
         });
     });
 
-    Object.keys(menu).forEach(cafeteria => {
+    for (const cafeteria of Object.keys(menu)) {
         const meals = menu[cafeteria]
         const data = {
             cafeteria: cafeteria,
             meals: meals
         }
-        callback({
+        yield ({
             data: data,
             date: date
-        })
-    })
+        });
+    }
 };

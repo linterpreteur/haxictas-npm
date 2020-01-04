@@ -7,7 +7,6 @@ export type MenuData = {
 };
 
 export type MenuParams = {data: string, date: Date};
-export type MenuCallback = (x?: MenuData, err?: {}) => void;
 
 export type CafeteriaData = {
   cafeteria: string,
@@ -16,9 +15,8 @@ export type CafeteriaData = {
 };
 
 export type CafeteriaParams = string;
-export type CafeteriaCallback = (x?: CafeteriaData, err?: {}) => void;
 
 export type Parser = {
-  menus: (params: MenuParams, callback: MenuCallback) => void,
-  cafeterias: (params: CafeteriaParams, callback: CafeteriaCallback) => void
+  menus: (params: MenuParams) => Generator<MenuData, void, undefined>,
+  cafeterias: (params: CafeteriaParams) => Generator<CafeteriaData, void, undefined>
 }

@@ -5,10 +5,8 @@ describe(menus, () => {
   it('parses given page', () => {
     const params = {data: html, date: new Date(0)};
 
-    menus(params, (x, err) => {
+    const gen = menus(params);
 
-      expect(err).not.toBe(expect.anything());
-      expect(x.data).toMatchSnapshot();
-    });
+    Array.from(gen).forEach(x => expect(x.data).toMatchSnapshot());
   });
 });

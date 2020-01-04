@@ -1,8 +1,8 @@
 import {Parser} from "../../../src/parser";
 
-module.exports = <Parser>{
-    menus: ({date}, callback) => {
-        callback({
+const parser: Parser = {
+    menus: function* ({date}) {
+        yield ({
             date: date,
             data: {
                 cafeteria: '새로운 식당',
@@ -22,8 +22,8 @@ module.exports = <Parser>{
             }
         });
     },
-    cafeterias: (data, callback) => {
-        callback({
+    cafeterias: function* () {
+        yield ({
             cafeteria: '새로운 식당',
             location: '사범대 어딘가',
             hours: [{
@@ -37,3 +37,4 @@ module.exports = <Parser>{
         });
     }
 };
+export default parser;

@@ -2,14 +2,12 @@ import {snuco as html} from '../../test/data';
 import {menus, cafeterias} from './parser';
 
 describe(menus, () => {
-  it('parses given page', () => {
+  it('parses given page', async () => {
     const params = {data: html.menus, date: new Date(0)};
 
-    menus(params, (x, err) => {
+    const gen = menus(params);
 
-      expect(x.data).toMatchSnapshot();
-      expect(err).not.toBe(expect.anything());
-    });
+    Array.from(gen).forEach(x => expect(x.data).toMatchSnapshot());
   });
 });
 
@@ -17,10 +15,8 @@ describe(cafeterias, () => {
   it('parses given page', () => {
     const params = html.cafeterias;
 
-    cafeterias(params, (x, err) => {
+    const gen = cafeterias(params);
 
-      expect(x).toMatchSnapshot();
-      expect(err).not.toBe(expect.anything());
-    });
+    Array.from(gen).forEach(x => expect(x).toMatchSnapshot());
   });
 });

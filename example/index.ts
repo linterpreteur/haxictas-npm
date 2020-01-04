@@ -3,28 +3,35 @@ import {CafeteriaData, MenuData} from "../src/parser";
 import load from '../src';
 const haxictas = load(`${__dirname}/third_party`);
 
-const cafeteriasCallback = (id: string) => (info: CafeteriaData, err: {}) => {
-    if (err) {
-        return console.error(err);
+async function handleCafeterias(id: string, gen: AsyncGenerator<CafeteriaData, void, undefined>) {
+    try {
+        for await (const val of gen) {
+            console.log(id, JSON.stringify(val, null, 2));
+        };
+    } catch (e) {
+        console.error(e);
     }
-    console.log(id, JSON.stringify(info, null, 2));
-};
+}
 
-const menusCallback = (id: string) => (result: MenuData, err: {}) => {
-    if (err) {
-        return console.error(err);
+async function handleMenus(id: string, gen: AsyncGenerator<MenuData, void, undefined>) {
+    try {
+        for await (const {date, data} of gen) {
+            console.log(id, date && date.toString(), JSON.stringify(data, null, 2));
+        };
+    } catch (e) {
+        console.error(e);
     }
-    let {date, data} = result;
-    console.log(id, date && date.toString(), JSON.stringify(data, null, 2));
-};
+}
 
-haxictas.snuco.cafeterias(cafeteriasCallback('snuco'));
-haxictas.ourhome.cafeterias(cafeteriasCallback('ourhome'));
-
-const date = new Date();
-haxictas.snuco.menus(date, menusCallback('snuco'));
-haxictas.ourhome.menus(date, menusCallback('ourhome'));
-haxictas.mini.menus(date, menusCallback('mini'));
-
-haxictas.new_cafeteria.menus(date, menusCallback('new_cafeteria'));
-haxictas.new_cafeteria.cafeterias(cafeteriasCallback('new_cafeteria'));
+(async () => {
+    handleCafeterias('snuco', haxictas.snuco.cafeterias());
+    handleCafeterias('ourhome', haxictas.ourhome.cafeterias());
+    
+    const date = new Date();
+    handleMenus('snuco', haxictas.snuco.menus(date));
+    handleMenus('ourhome', haxictas.ourhome.menus(date));
+    handleMenus('mini', haxictas.mini.menus(date));
+    
+    handleMenus('new_cafeteria', haxictas.new_cafeteria.menus(date));
+    handleCafeterias('new_cafeteria', haxictas.new_cafeteria.cafeterias());
+})();

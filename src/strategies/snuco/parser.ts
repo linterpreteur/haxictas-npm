@@ -1,8 +1,8 @@
 import {JSDOM} from 'jsdom';
 import {normalize, querySelectorArray} from '../../lib/utils';
-import {MenuParams, MenuCallback, CafeteriaParams, CafeteriaCallback, CafeteriaData} from '../../parser';
+import {CafeteriaData, Parser} from '../../parser';
 
-export function menus({data: page, date}: MenuParams, callback: MenuCallback) {
+export const menus: Parser['menus'] = function* menus({data: page, date}) {
     const {document} = (new JSDOM(page)).window;
 
     function parseMenu(s: string): {[item: string]: number} {
@@ -13,7 +13,7 @@ export function menus({data: page, date}: MenuParams, callback: MenuCallback) {
             .filter(x => x && x[0])
             .reduce((acc, [k, v]) => Object.assign({}, acc, {[k]: v}), {});
     }
-    querySelectorArray(document, 'tbody tr').map(row => {
+    for (const row of querySelectorArray(document, 'tbody tr')) {
         const [cafeteria, breakfast, lunch, dinner] = querySelectorArray(row, 'td');
         const data = {
             cafeteria: normalize(cafeteria.textContent),
@@ -23,11 +23,11 @@ export function menus({data: page, date}: MenuParams, callback: MenuCallback) {
                 parseMenu(dinner.textContent)
             ]
         };
-        callback({data: data, date: date});
-    });
+        yield ({data: data, date: date});
+    }
 };
 
-export function cafeterias(page: CafeteriaParams, callback: CafeteriaCallback) {
+export const cafeterias: Parser['cafeterias'] = function* cafeterias(page) {
     const {document} = (new JSDOM(page)).window;
 
     const header = querySelectorArray(document, 'thead th:not([colspan])');
@@ -125,5 +125,5 @@ export function cafeterias(page: CafeteriaParams, callback: CafeteriaCallback) {
             { hours: aggregatedHours }
         );
     });
-    callback(info);
+    yield info;
 };

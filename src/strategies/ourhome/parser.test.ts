@@ -5,11 +5,9 @@ describe(menus, () => {
   it('parses given page', () => {
     const params = { data: ourhome.menus, date: new Date(0) };
 
-    menus(params, (x, err) => {
+    const gen = menus(params);
 
-      expect(x).toMatchSnapshot();
-      expect(err).not.toBe(expect.anything());
-    });
+    Array.from(gen).forEach(x => expect(x).toMatchSnapshot());
   });
 });
 
@@ -17,10 +15,8 @@ describe(cafeterias, () => {
   it('parses given page', () => {
     const params = ourhome.cafeterias;
 
-    cafeterias(params, (x, err) => {
+    const gen = cafeterias(params);
 
-      expect(x).toMatchSnapshot();
-      expect(err).not.toBe(expect.anything());
-    });
+    Array.from(gen).forEach(x => expect(x).toMatchSnapshot());
   });
 });

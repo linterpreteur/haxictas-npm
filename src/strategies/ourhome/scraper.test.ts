@@ -7,32 +7,29 @@ describe(menus, () => {
     const date = new Date(y, m - 1, d);
     const url = `https://dorm.snu.ac.kr/dk_board/facility/food.php?start_date2=${date.getTime() / 1000}`;
 
-    menus(date, () => {});
+    menus(date);
 
     expect(axios.get).toBeCalledWith(url, expect.anything());
   });
 
   it('invokes callback on success', async () => {
     const date = new Date(0);
-    const callback = jest.fn();
     const res = {data: 'response'};
     (axios.get as jest.Mock<Promise<{}>, []>).mockResolvedValueOnce(res);
 
-    await menus(date, callback);
+    const result = await menus(date);
 
-    expect(callback).toBeCalledWith({...res, date}, undefined);
-    expect(callback).not.toBeCalledWith(expect.anything(), expect.anything());
+    expect(result).toEqual({...res, date});
   });
 
   it('invokes callback on error', async () => {
     const date = new Date(0);
-    const callback = jest.fn();
-    const err = {};
+    const err = new Error();
     (axios.get as jest.Mock<Promise<{}>, []>).mockRejectedValueOnce(err);
 
-    await menus(date, callback);
+    const result = menus(date);
 
-    expect(callback).toBeCalledWith(expect.anything(), err);
+    expect(result).rejects.toEqual(err);
   });
 });
 
@@ -40,7 +37,7 @@ describe(cafeterias, () => {
   it('triggers HTTP request', () => {
     const url = 'https://dorm.snu.ac.kr/dk_board/dk_dormitory/dorm_content.php?ht_id=snu2_1_1';
 
-    cafeterias(() => {});
+    cafeterias();
 
     expect(axios.get).toBeCalledWith(url, expect.anything());
   });
@@ -48,21 +45,18 @@ describe(cafeterias, () => {
   it('invokes callback on success', async () => {
     const res = 'response';
     (axios.get as jest.Mock<Promise<{}>, []>).mockResolvedValueOnce({data: res});
-    const callback = jest.fn();
 
-    await cafeterias(callback);
+    const result = await cafeterias();
 
-    expect(callback).toBeCalledWith(res);
-    expect(callback).not.toBeCalledWith(expect.anything(), expect.anything());
+    expect(result).toEqual(res);
   });
 
   it('invokes callback on error', async () => {
-    const err = {};
+    const err = new Error();
     (axios.get as jest.Mock<Promise<{}>, []>).mockRejectedValueOnce(err);
-    const callback = jest.fn();
 
-    await cafeterias(callback);
+    const result = cafeterias();
 
-    expect(callback).toBeCalledWith(null, err);
+    expect(result).rejects.toEqual(err);
   });
 });

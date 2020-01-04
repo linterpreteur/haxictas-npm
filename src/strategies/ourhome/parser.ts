@@ -1,5 +1,5 @@
 import * as cheerio from 'cheerio';
-import {MenuParams, MenuCallback, CafeteriaParams, CafeteriaCallback, CafeteriaData} from '../../parser';
+import {CafeteriaData, Parser} from '../../parser';
 
 const defaultPrices = {
 	menu_a: 2000,
@@ -11,7 +11,7 @@ const defaultPrices = {
 	none: '기타'
 };
 
-export function menus({data: page, date: startDate}: MenuParams, callback: MenuCallback) {
+export const menus: Parser['menus'] = function* menus({data: page, date: startDate}) {
     const cached = this.cached = this.cached || {};
     const $ = cheerio.load(page);
 
@@ -86,22 +86,25 @@ export function menus({data: page, date: startDate}: MenuParams, callback: MenuC
         }
     });
     
-    dates.forEach((date, day) => {
-        date.forEach(cafeteria => {
+    for (let i = 0; i < dates.length; i++) {
+        const date = dates[i];
+        for (const cafeteria of date) {
             const menuDate = new Date(startDate);
-            menuDate.setDate(startDate.getDate() + (day - startDate.getDay()) % 7);
-            callback({date: menuDate, data: cafeteria});
-        });
-    });
+            menuDate.setDate(startDate.getDate() + (i - startDate.getDay()) % 7);
+            yield ({date: menuDate, data: cafeteria});
+        }
+    }
 };
 
-export function cafeterias(page: CafeteriaParams, callback: CafeteriaCallback) {
+export const cafeterias: Parser['cafeterias'] = function* cafeterias(page) {
     const $ = cheerio.load(page);
     const tables = $('.basic_tbl').filter(i => i < 2);
     
     const onBreakPattern = /\(방학중 ([0-9]{2}:[0-9]{2})\)/;
     
-    tables.each((i, table) => {
+    for (let i = 0; i < tables.length; i++) {
+        const table = tables.eq(i);
+        
         const result: CafeteriaData = {
             cafeteria: i === 0 ? '919동' : '아워홈',
             hours: [],
@@ -163,6 +166,6 @@ export function cafeterias(page: CafeteriaParams, callback: CafeteriaCallback) {
                 });
             }
         });
-        callback(result);
-    });
+        yield result;
+    }
 };
