@@ -8,7 +8,7 @@ describe(menus, () => {
 
     menus(date, () => {});
 
-    expect(axios.get).toBeCalledWith(`http://mini.snu.kr/cafe/set/${y}-${m}-${d}`, expect.anything());
+    expect(axios.get).toBeCalledWith(`http://mini.snu.kr/cafe/set/${y}-${m}-${d}`);
   });
 
   it('invokes callback on success', async () => {
@@ -19,7 +19,8 @@ describe(menus, () => {
 
     await menus(date, callback);
 
-    expect(callback).toBeCalledWith({...res, date}, undefined);
+    expect(callback).toBeCalledWith({...res, date});
+    expect(callback).not.toBeCalledWith(expect.anything(), expect.anything());
   });
 
   it('invokes callback on error', async () => {
@@ -30,6 +31,6 @@ describe(menus, () => {
 
     await menus(date, callback);
 
-    expect(callback).toBeCalledWith(expect.anything(), err);
+    expect(callback).toBeCalledWith(null, err);
   });
 });

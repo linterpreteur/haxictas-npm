@@ -1,6 +1,6 @@
 import * as https from 'https';
 import * as qs from 'querystring';
-import * as httpHandler from '../../lib/http-handler';
+import axios from 'axios';
 import {MenuCallback, CafeteriaCallback} from '../../scraper';
 
 export async function menus(date: Date, callback: MenuCallback) {
@@ -16,11 +16,9 @@ export async function menus(date: Date, callback: MenuCallback) {
     const _callback = (responseBody?: string, err?: {}) => {
         callback({data: responseBody, date: date}, err)
     };
-    return httpHandler.get(
-        `${url}?${query}`,
-        opts,
-        _callback
-    );
+    return axios.get(`${url}?${query}`, opts)
+        .then(x => _callback(x.data))
+        .catch(err => _callback(null, err));
 };
 
 export async function cafeterias(callback: CafeteriaCallback) {
@@ -29,9 +27,7 @@ export async function cafeterias(callback: CafeteriaCallback) {
         rejectUnauthorized: false
     });
     const opts = {httpsAgent: httpsAgent};
-    return httpHandler.get(
-        url,
-        opts,
-        callback
-    );
+    return axios.get(url, opts)
+        .then(x => callback(x.data))
+        .catch(err => callback(null, err));
 };
