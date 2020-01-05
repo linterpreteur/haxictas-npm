@@ -1,5 +1,5 @@
-import axios from 'axios';
 import {Scraper} from '../../scraper';
+import axios from 'axios-client';
 
 export const menus: Scraper['menus'] = async function (date) {
     const dateString = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`

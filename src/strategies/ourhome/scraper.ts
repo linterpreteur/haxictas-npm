@@ -1,7 +1,7 @@
 import * as https from 'https';
 import * as qs from 'querystring';
-import axios from 'axios';
 import {Scraper} from '../../scraper';
+import axios from 'axios-client';
 
 export const menus: Scraper['menus'] = async function (date) {
     const url = 'https://dorm.snu.ac.kr/dk_board/facility/food.php';

@@ -1,5 +1,5 @@
-import axios from 'axios';
 import {menus, cafeterias} from './scraper';
+import axios from 'axios-client';
 
 describe(menus, () => {
   it('formats URL', async () => {
