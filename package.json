@@ -7,8 +7,9 @@
   "scripts": {
     "prepublish": "tsc",
     "build": "tsc",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist coverage",
     "test": "jest",
+    "coverage": "jest --coverage",
     "lint": "eslint src/ --ext .js,.jsx,.ts,.tsx"
   },
   "dependencies": {
