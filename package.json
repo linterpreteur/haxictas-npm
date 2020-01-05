@@ -20,7 +20,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git://github.com/wooseopkim/haxictas.git"
+    "url": "git://github.com/wooseopkim/haxictas-scraper.git"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.15",
