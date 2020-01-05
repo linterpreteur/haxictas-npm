@@ -7,7 +7,7 @@ export const menus: Parser['menus'] = function* menus({data: page, date}) {
 
     function parseMenu(s: string): {[item: string]: number} {
         return s.split(/\n+/g)
-            .map(x => x.match(/(.+?)\s*([\d,.]+원)$/) || x)
+            .map(x => /(.+?)\s*([\d,.]+원)$/.exec(x) || x)
             .map(x => (typeof x === 'string') ? [x, '기타'] : [x[1], x[2]])
             .map(([k, v]) => [normalize(k), normalize(v)])
             .filter(x => x && x[0])
@@ -66,26 +66,26 @@ export const cafeterias: Parser['cafeterias'] = function* cafeterias(page) {
             cells.splice(0, 1);
         }
         
-        const [size, _, weekdays, saturday, holidays] = cells;
+        const [size, , weekdays, saturday, holidays] = cells;
 
         const specialTypes = /(채식)/;
-        const specialTypeMatches = size.textContent.match(specialTypes);
+        const specialTypeMatches = specialTypes.exec(size.textContent);
         if (specialTypeMatches) {
             floor = normalize(specialTypeMatches[1]);
         }
 
-        function parseHours(s) {
+        function parseHours(s: string): string[]|string[][] {
             const numeralHours = /(\d+:\d+)-(\d+:\d+)/;
             const specialHours = /분식/;
-            if (!s.match(numeralHours)) {
+            if (!numeralHours.exec(s)) {
                 return [normalize(s)];
             }
-            if (s.match(specialHours)) {
+            if (specialHours.exec(s)) {
                 return [normalize(s)];
             }
             return s.split(/\n+/)
                 .map(normalize)
-                .map(x => x.match(numeralHours))
+                .map(x => numeralHours.exec(x))
                 .filter(x => x)
                 .map(x => [x[1], x[2]]);
         }
@@ -95,7 +95,10 @@ export const cafeterias: Parser['cafeterias'] = function* cafeterias(page) {
             holidays: parseHours(holidays.textContent)
         };
 
-        function isEqualEntry(a, b) {
+        function isEqualEntry(
+            a: CafeteriaData['hours'][0]['conditions'],
+            b: CafeteriaData['hours'][0]['conditions']
+        ): boolean {
             return a.floor === b.floor &&
                 a['opens_at'] === b['opens_at'] &&
                 a['closes_at'] === b['closes_at'];

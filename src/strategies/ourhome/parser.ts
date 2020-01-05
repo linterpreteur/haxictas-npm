@@ -2,12 +2,12 @@ import * as cheerio from 'cheerio';
 import {CafeteriaData, Parser} from '../../parser';
 
 const defaultPrices = {
-	menu_a: 2000,
-	menu_b: 2500,
-	menu_c: 3000,
-	menu_d: 3500,
-	menu_e: 4000,
-	menu_f: 5000,
+	'menu_a': 2000,
+	'menu_b': 2500,
+	'menu_c': 3000,
+	'menu_d': 3500,
+	'menu_e': 4000,
+	'menu_f': 5000,
 	none: '기타'
 };
 
@@ -15,14 +15,14 @@ export const menus: Parser['menus'] = function* menus({data: page, date: startDa
     const cached = this.cached = this.cached || {};
     const $ = cheerio.load(page);
 
-    const parsePrice = (board: Cheerio) => {
-        const price = {};
+    const parsePrice = (board: Cheerio): Partial<typeof defaultPrices> => {
+        const price: Partial<typeof defaultPrices> = {};
         const lis = board.find('li');
-        if (lis.contents().length) return false;
+        if (lis.contents().length) return null;
         lis.each(li => {
             const tag = $(li).attr('class');
             let value = $(li).text();
-            if (value.match(/[0-9]원/)) {
+            if (/[0-9]원/.exec(value)) {
                 value = value.replace(/[^0-9]/, '');
             }
             price[tag] = value;
@@ -37,7 +37,7 @@ export const menus: Parser['menus'] = function* menus({data: page, date: startDa
         cafeterias[$(td).text().trim()] = i;
     });
     
-    const dates: {cafeteria: string, meals: {[item: string]: number}[]}[][] = [];
+    const dates: {cafeteria: string; meals: {[item: string]: number}[]}[][] = [];
     for (let i = 0; i < 7; i++) {
         const date = [];
         for (let j = 0; j < Object.keys(cafeterias).length; j++) {
@@ -53,7 +53,7 @@ export const menus: Parser['menus'] = function* menus({data: page, date: startDa
     const meals = ['아침', '점심', '저녁'];
     let onRemarksCell: boolean;
             
-    const isCafeteriaNameCell = (td) => $(td).attr('scope') === 'rowgroup';
+    const isCafeteriaNameCell = (td: CheerioElement): boolean => $(td).attr('scope') === 'rowgroup';
     
     $('.t_col td').each((_, td) => {
         const lis = $(td).find('li');
@@ -67,7 +67,7 @@ export const menus: Parser['menus'] = function* menus({data: page, date: startDa
         if (onTagCell) {
             onRemarksCell = (cellText === '비고');
             if (isCafeteriaNameCell(td)) cafeteria = cellText.trim();
-            if (meals.indexOf(cellText) > -1) meal = meals.indexOf(cellText);
+            if (meals.includes(cellText)) meal = meals.indexOf(cellText);
         } else if (onMenuItemCell) {
             const result = dates[day][cafeterias[cafeteria]];
             
@@ -116,25 +116,25 @@ export const cafeterias: Parser['cafeterias'] = function* cafeterias(page) {
             if (i > 3) {
                 result.location = tds.first().text().trim();
             } else {
-                const search = function(days: string[]) {
+                const search = function(days: string[]): CafeteriaData['hours'][0] {
                     for (let i = 0; i < result.hours.length; i++) {
                         const target = result.hours[i];
-                        if (target.conditions.day.every(x => days.indexOf(x) != -1) &&
-                            days.every(x => target.conditions.day.indexOf(x) != -1)) {
+                        if (target.conditions.day.every(x => days.includes(x)) &&
+                            days.every(x => target.conditions.day.includes(x))) {
                             return target;
                         }
                     }
                     return null;
                 };
                 
-                const update = function(days: string[], hours: string[]) {
+                const update = function(days: string[], hours: string[]): void {
                     let found = search(days);
                     if (!found) {
                         found = {
                             conditions: {
                                 day: days,
-                                opens_at: [],
-                                closes_at: []
+                                'opens_at': [],
+                                'closes_at': []
                             },
                         };
                         result.hours.push(found);
@@ -145,16 +145,16 @@ export const cafeterias: Parser['cafeterias'] = function* cafeterias(page) {
                 
                 tds.each((i, td) => {
                     let text = $(td).text().trim();
-                    const tokens = () => text.split('~');
+                    const tokens = (): string[] => text.split('~');
                     let days = [i === 0 ? 'weekdays' : 'weekends'];
                     
                     if (parseInt($(td).attr('colspan'), 10) === 2) {
                         days = ['weekdays', 'weekends'];
                     }
                     
-                    if (text.indexOf('방학중') != -1) {
+                    if (text.includes('방학중')) {
                         const onBreakTokens = tokens().map(token => {
-                            const match = token.match(onBreakPattern);
+                            const match = onBreakPattern.exec(token);
                             return (match && match[1]) || token;
                         });
                         

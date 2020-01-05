@@ -30,8 +30,8 @@ const parser: Parser = {
                 conditions: {
                     day: ['monday', 'holidays'],
                     floor: '3층',
-                    opens_at: ['13:00'],
-                    closes_at: ['18:00']
+                    'opens_at': ['13:00'],
+                    'closes_at': ['18:00']
                 }
             }]
         });

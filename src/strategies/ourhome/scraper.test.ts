@@ -9,6 +9,7 @@ describe(menus, () => {
 
     menus(date);
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(axios.get).toBeCalledWith(url, expect.anything());
   });
 
@@ -22,7 +23,7 @@ describe(menus, () => {
     expect(result).toEqual({...res, date});
   });
 
-  it('invokes callback on error', async () => {
+  it('invokes callback on error', () => {
     const date = new Date(0);
     const err = new Error();
     (axios.get as jest.Mock<Promise<{}>, []>).mockRejectedValueOnce(err);
@@ -39,6 +40,7 @@ describe(cafeterias, () => {
 
     cafeterias();
 
+    // eslint-disable-next-line @typescript-eslint/unbound-method
     expect(axios.get).toBeCalledWith(url, expect.anything());
   });
 
@@ -51,7 +53,7 @@ describe(cafeterias, () => {
     expect(result).toEqual(res);
   });
 
-  it('invokes callback on error', async () => {
+  it('invokes callback on error', () => {
     const err = new Error();
     (axios.get as jest.Mock<Promise<{}>, []>).mockRejectedValueOnce(err);
 
