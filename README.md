@@ -1,3 +1,4 @@
 # Haxictas
+![](https://img.shields.io/npm/v/haxictas) ![](https://img.shields.io/github/workflow/status/wooseopkim/haxictas-scraper/CI) ![](https://img.shields.io/coveralls/github/wooseopkim/haxictas-scraper) ![](https://img.shields.io/github/license/wooseopkim/haxictas-scraper)
 
-서울대학교 학생식당 메뉴를 긁어와 처리하는 NPM 모듈입니다.
+[Example](./example/index.ts)
